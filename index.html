@@ -193,7 +193,7 @@
             });
 
             wrapper.appendChild(label);
-            container.appendChild(wrapper);
+            // Do not append wrapper to container yet, in case suboptions exist
           } else {
             const label = document.createElement("label");
             label.textContent = config.FriendlyName || key;
@@ -273,9 +273,18 @@
 
               subWrapper.appendChild(subInput);
               groupWrapper.appendChild(subWrapper);
-              container.appendChild(groupWrapper);
+              // If parent is Boolean, append groupWrapper to parent wrapper, else to container
+              if (config.type === "Boolean") {
+                wrapper.appendChild(groupWrapper);
+              } else {
+                container.appendChild(groupWrapper);
+              }
             }
           });
+          // For Boolean, append wrapper to container after suboptions are appended
+          if (config.type === "Boolean") {
+            container.appendChild(wrapper);
+          }
         });
       }
 
@@ -291,7 +300,7 @@
           block.dataset.fieldName = key;
 
           const label = document.createElement("label");
-          label.textContent = key;
+          label.textContent = config.FriendlyName || key;
           block.appendChild(label);
 
           let input;
@@ -304,14 +313,14 @@
           } else if (config.FieldType === "FreeText") {
             input = document.createElement("input");
             input.type = "text";
-            input.placeholder = key;
+            input.placeholder = config.FriendlyName || key;
             input.addEventListener("input", generateGroupName);
           } else if (config.FieldType === "Predefined") {
             input = document.createElement("select");
 
             const defaultOpt = document.createElement("option");
             defaultOpt.value = "";
-            defaultOpt.textContent = `Select ${key}`;
+            defaultOpt.textContent = `Select ${config.FriendlyName || key}`;
             input.appendChild(defaultOpt);
 
             config.Values.forEach((v) => {
@@ -363,7 +372,7 @@
             subBlock.className = "field-block subfield";
 
             const label = document.createElement("label");
-            label.textContent = subKey;
+            label.textContent = subConfig.FriendlyName || subKey;
             subBlock.appendChild(label);
 
             let input;
