@@ -9,7 +9,7 @@
 <body class="bg-gray-100 text-gray-900 min-h-screen flex items-center justify-center p-6">
   <div class="bg-white p-6 rounded-2xl shadow-xl w-full max-w-xl">
     <h1 class="text-2xl font-bold mb-4">Intune Group Name Generator</h1>
-    <div class="grid grid-cols-2 gap-4 mb-4">
+    <div class="grid grid-cols-2 gap-4 mb-4" id="form-fields">
       <div>
         <label class="block font-medium mb-1">Platform</label>
         <select id="platform" class="w-full p-2 rounded border uppercase"></select>
@@ -22,11 +22,7 @@
         <label class="block font-medium mb-1">Type</label>
         <select id="type" class="w-full p-2 rounded border uppercase"></select>
       </div>
-      <div id="scope-wrapper">
-        <label class="block font-medium mb-1">Scope (Group Membership)</label>
-        <input id="scope" type="text" class="w-full p-2 rounded border" placeholder="e.g. WSLUsers, SharedPCs, Developers" />
-      </div>
-      <div id="purpose-wrapper" class="col-span-2">
+            <div id="purpose-wrapper" class="col-span-2">
         <label class="block font-medium mb-1">Purpose</label>
         <select id="purpose" class="w-full p-2 rounded border uppercase"></select>
       </div>
@@ -37,6 +33,11 @@
         <input id="version" type="text" class="w-full p-2 rounded border mb-2" placeholder="e.g. 123.45.67" />
         <label class="block font-medium mb-1">Intent</label>
         <select id="intent" class="w-full p-2 rounded border uppercase"></select>
+      </div>
+    </div>
+    <div id="scope-wrapper" class="col-span-2">
+        <label class="block font-medium mb-1">Scope (Group Membership)</label>
+        <input id="scope" type="text" class="w-full p-2 rounded border" placeholder="e.g. WSLUsers, SharedPCs, Developers" />
       </div>
     </div>
     <div class="mt-4">
@@ -114,7 +115,10 @@
       if (el) el.addEventListener('input', updateOutput);
     });
 
-    loadAllOptions().then(updateOutput);
+    loadAllOptions().then(() => {
+  toggleAppFields();
+  updateOutput();
+});
   </script>
 </body>
 </html>
