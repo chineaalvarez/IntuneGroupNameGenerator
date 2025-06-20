@@ -311,11 +311,11 @@
       }
 
       function sanitize(value) {
-        if (options.TrimFields) {
+        if (options.TrimFields?.value) {
           value = value.trim();
         }
-        if (typeof options.WhitespaceReplacement === "string") {
-          value = value.replace(/\s+/g, options.WhitespaceReplacement);
+        if (typeof options.WhitespaceReplacement?.value === "string") {
+          value = value.replace(/\s+/g, options.WhitespaceReplacement.value);
         }
         return value;
       }
@@ -356,9 +356,9 @@
 
         groupName = groupName.replace(/[-_]+$/, "");
 
-        if (options.IncludeTimestamp) {
+        if (options.IncludeTimestamp?.value) {
           const now = new Date();
-          let formatted = options.TimestampFormat || "YYYYMMDD-HHmm";
+          let formatted = options.IncludeTimestamp.format?.value || "YYYYMMDD-HHmm";
           formatted = formatted
             .replace("YYYY", now.getFullYear())
             .replace("MM", String(now.getMonth() + 1).padStart(2, "0"))
@@ -368,15 +368,15 @@
           groupName += `-${formatted}`;
         }
 
-        if (options.Uppercase) {
+        if (options.Uppercase?.value) {
           groupName = groupName.toUpperCase();
         }
 
         if (
-          typeof options.MaxLength === "number" &&
-          groupName.length > options.MaxLength
+          typeof options.MaxLength?.value === "number" &&
+          groupName.length > options.MaxLength.value
         ) {
-          output.textContent = `❌ Error: Group name is ${groupName.length} characters long, exceeding the limit of ${options.MaxLength}.`;
+          output.textContent = `❌ Error: Group name exceeds the maximum allowed length of ${options.MaxLength.value} characters.`;
           output.style.color = "red";
           return;
         }
