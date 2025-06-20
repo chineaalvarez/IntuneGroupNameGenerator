@@ -164,7 +164,10 @@
         container.innerHTML = "";
 
         Object.entries(optionsConfig).forEach(([key, setting]) => {
-          if (!setting.editable) return;
+          if (!setting.editable) {
+            // Not shown in UI but still used in logic (keep in options)
+            return;
+          }
 
           const wrapper = document.createElement("div");
           wrapper.style.marginBottom = "1rem";
@@ -392,6 +395,9 @@
         const container = document.getElementById("formContainer");
         const output = document.getElementById("output");
 
+        // Ensure settings like Uppercase (even if not editable) are respected by always checking options.Uppercase?.enabled
+        // (No change needed here since the code below already checks options.Uppercase?.enabled)
+
         schema.Fields.forEach((field) => {
           const key = Object.keys(field)[0];
           const config = field[key];
@@ -435,6 +441,7 @@
           groupName += `-${formatted}`;
         }
 
+        // Always respect Uppercase option, even if not editable/shown in UI
         if (options.Uppercase?.enabled) {
           groupName = groupName.toUpperCase();
         }
