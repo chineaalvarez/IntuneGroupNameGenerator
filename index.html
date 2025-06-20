@@ -192,78 +192,90 @@
 
             wrapper.appendChild(label);
             container.appendChild(wrapper);
-            return;
-          }
-
-          const label = document.createElement("label");
-          label.textContent = config.FriendlyName || key;
-          label.style.display = "block";
-          label.style.fontWeight = "500";
-          if (config.type !== "Boolean") {
+          } else {
+            const label = document.createElement("label");
+            label.textContent = config.FriendlyName || key;
+            label.style.display = "block";
+            label.style.fontWeight = "500";
             wrapper.appendChild(label);
+
+            let input;
+
+            if (config.type === "Integer" || config.type === "Text") {
+              input = document.createElement("input");
+              input.type = config.type === "Integer" ? "number" : "text";
+              input.value = config.value;
+              input.style.width = "100%";
+              input.addEventListener("input", () => {
+                options[key].value = config.type === "Integer" ? parseInt(input.value, 10) : input.value;
+                generateGroupName();
+              });
+            } else if (config.type === "Choice" && Array.isArray(config.choices)) {
+              input = document.createElement("select");
+              config.choices.forEach(choice => {
+                const opt = document.createElement("option");
+                opt.value = choice;
+                opt.textContent = choice;
+                if (choice === config.value) {
+                  opt.selected = true;
+                }
+                input.appendChild(opt);
+              });
+              input.addEventListener("change", () => {
+                options[key].value = input.value;
+                generateGroupName();
+              });
+            }
+
+            wrapper.appendChild(input);
+            container.appendChild(wrapper);
           }
 
-          let input;
+          // Dynamically render nested editable options
+          Object.entries(config).forEach(([subKey, subOption]) => {
+            if (["value", "editable", "type", "FriendlyName"].includes(subKey)) return;
+            if (typeof subOption === "object" && "value" in subOption && "type" in subOption) {
+              const subWrapper = document.createElement("div");
+              subWrapper.style.marginTop = "0.5rem";
 
-          if (config.type === "Integer" || config.type === "Text") {
-            input = document.createElement("input");
-            input.type = config.type === "Integer" ? "number" : "text";
-            input.value = config.value;
-            input.style.width = "100%";
-            input.addEventListener("input", () => {
-              options[key].value = config.type === "Integer" ? parseInt(input.value, 10) : input.value;
-              generateGroupName();
-            });
-          } else if (config.type === "Choice" && Array.isArray(config.choices)) {
-            input = document.createElement("select");
-            config.choices.forEach(choice => {
-              const opt = document.createElement("option");
-              opt.value = choice;
-              opt.textContent = choice;
-              if (choice === config.value) {
-                opt.selected = true;
+              const subLabel = document.createElement("label");
+              subLabel.textContent = subOption.FriendlyName || subKey;
+              subLabel.style.display = "block";
+              subLabel.style.fontWeight = "500";
+              subWrapper.appendChild(subLabel);
+
+              const subInput = document.createElement("input");
+              subInput.type = subOption.type === "Integer" ? "number" : "text";
+              subInput.value = subOption.value;
+              subInput.style.width = "100%";
+
+              subInput.addEventListener("input", () => {
+                options[key][subKey].value = subOption.type === "Integer"
+                  ? parseInt(subInput.value, 10)
+                  : subInput.value;
+                generateGroupName();
+              });
+
+              // if the parent is a Boolean switch, link disable state
+              if (config.type === "Boolean" && input) {
+                subInput.disabled = !input.checked;
+                input.addEventListener("change", () => {
+                  subInput.disabled = !input.checked;
+                });
               }
-              input.appendChild(opt);
-            });
-            input.addEventListener("change", () => {
-              options[key].value = input.value;
-              generateGroupName();
-            });
-          }
 
-          wrapper.appendChild(input);
-          container.appendChild(wrapper);
+              // Group wrapper for sub-options to visually indent and group
+              const groupWrapper = document.createElement("div");
+              groupWrapper.style.marginLeft = "1rem";
+              groupWrapper.style.paddingLeft = "0.75rem";
+              groupWrapper.style.borderLeft = "2px solid #ccc";
+              groupWrapper.style.marginTop = "0.5rem";
 
-          // Special handling for TimestampFormat under IncludeTimestamp
-          if (key === "IncludeTimestamp" && config.format) {
-            const formatWrapper = document.createElement("div");
-            formatWrapper.style.marginTop = "0.5rem";
-
-            const formatLabel = document.createElement("label");
-            formatLabel.textContent = config.format.FriendlyName || "TimestampFormat";
-            formatLabel.style.display = "block";
-            formatLabel.style.fontWeight = "500";
-            formatWrapper.appendChild(formatLabel);
-
-            const formatInput = document.createElement("input");
-            formatInput.type = "text";
-            formatInput.value = config.format.value;
-            formatInput.style.width = "100%";
-
-            formatInput.addEventListener("input", () => {
-              options[key].format.value = formatInput.value;
-              generateGroupName();
-            });
-
-            // Disable if checkbox is not checked
-            input.addEventListener("change", () => {
-              formatInput.disabled = !input.checked;
-            });
-
-            formatInput.disabled = !input.checked;
-            formatWrapper.appendChild(formatInput);
-            container.appendChild(formatWrapper);
-          }
+              subWrapper.appendChild(subInput);
+              groupWrapper.appendChild(subWrapper);
+              container.appendChild(groupWrapper);
+            }
+          });
         });
       }
 
