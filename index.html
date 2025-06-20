@@ -163,137 +163,73 @@
         const container = document.getElementById("optionsContainer");
         container.innerHTML = "";
 
-        Object.entries(optionsConfig).forEach(([key, config]) => {
-          if (!config.editable) return;
+        Object.entries(optionsConfig).forEach(([key, setting]) => {
+          if (!setting.editable) return;
 
           const wrapper = document.createElement("div");
-          wrapper.style.marginBottom = "0.75rem";
+          wrapper.style.marginBottom = "1rem";
 
-          let input; // Declare input in this scope so it's accessible for suboptions
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = setting.enabled;
+          checkbox.id = `chk-${key}`;
+          checkbox.style.marginRight = "0.5rem";
 
-          if (config.type === "Boolean") {
-            input = document.createElement("input");
-            input.type = "checkbox";
-            input.checked = config.value;
-            input.style.marginRight = "0.5rem";
-            input.style.width = "100%";
+          const label = document.createElement("label");
+          label.htmlFor = checkbox.id;
+          label.textContent = setting.FriendlyName || key;
+          label.style.fontWeight = "600";
 
-            // New structure: label is block, not flex, and checkbox + text in a grid div
-            const label = document.createElement("label");
-            label.style.display = "block";
-            label.style.fontWeight = "500";
+          const header = document.createElement("div");
+          header.style.display = "flex";
+          header.style.alignItems = "center";
+          header.style.gap = "0.5rem";
+          header.appendChild(checkbox);
+          header.appendChild(label);
+          wrapper.appendChild(header);
 
-            const checkboxWrapper = document.createElement("div");
-            checkboxWrapper.style.display = "grid";
-            checkboxWrapper.style.gridTemplateColumns = "auto 1fr";
-            checkboxWrapper.style.alignItems = "center";
-            checkboxWrapper.style.columnGap = "0.5rem";
+          const groupWrapper = document.createElement("div");
+          groupWrapper.style.marginLeft = "1.25rem";
+          groupWrapper.style.paddingLeft = "0.75rem";
+          groupWrapper.style.borderLeft = "2px solid #ccc";
+          groupWrapper.style.marginTop = "0.5rem";
 
-            const labelText = document.createElement("span");
-            labelText.textContent = config.FriendlyName || key;
+          Object.entries(setting.config || {}).forEach(([subKey, subOption]) => {
+            if (!("value" in subOption && "type" in subOption)) return;
 
-            checkboxWrapper.appendChild(input);
-            checkboxWrapper.appendChild(labelText);
-            label.appendChild(checkboxWrapper);
+            const subWrapper = document.createElement("div");
+            subWrapper.style.marginBottom = "0.5rem";
 
-            input.addEventListener("change", () => {
-              options[key].value = input.checked;
+            const subLabel = document.createElement("label");
+            subLabel.textContent = subOption.FriendlyName || subKey;
+            subLabel.style.display = "block";
+            subLabel.style.fontWeight = "500";
+            subWrapper.appendChild(subLabel);
+
+            const subInput = document.createElement("input");
+            subInput.type = subOption.type === "Integer" ? "number" : "text";
+            subInput.value = subOption.value;
+            subInput.style.width = "100%";
+
+            subInput.addEventListener("input", () => {
+              options[key].config[subKey].value =
+                subOption.type === "Integer" ? parseInt(subInput.value, 10) : subInput.value;
               generateGroupName();
             });
 
-            wrapper.appendChild(label);
-            // Do not append wrapper to container yet, in case suboptions exist
-          } else {
-            const label = document.createElement("label");
-            label.textContent = config.FriendlyName || key;
-            label.style.display = "block";
-            label.style.fontWeight = "500";
-            wrapper.appendChild(label);
+            subInput.disabled = !checkbox.checked;
+            checkbox.addEventListener("change", () => {
+              subInput.disabled = !checkbox.checked;
+              options[key].enabled = checkbox.checked;
+              generateGroupName();
+            });
 
-            if (config.type === "Integer" || config.type === "Text") {
-              input = document.createElement("input");
-              input.type = config.type === "Integer" ? "number" : "text";
-              input.value = config.value;
-              input.style.width = "100%";
-              input.addEventListener("input", () => {
-                options[key].value = config.type === "Integer" ? parseInt(input.value, 10) : input.value;
-                generateGroupName();
-              });
-            } else if (config.type === "Choice" && Array.isArray(config.choices)) {
-              input = document.createElement("select");
-              config.choices.forEach(choice => {
-                const opt = document.createElement("option");
-                opt.value = choice;
-                opt.textContent = choice;
-                if (choice === config.value) {
-                  opt.selected = true;
-                }
-                input.appendChild(opt);
-              });
-              input.addEventListener("change", () => {
-                options[key].value = input.value;
-                generateGroupName();
-              });
-            }
-
-            wrapper.appendChild(input);
-            container.appendChild(wrapper);
-          }
-
-          // Dynamically render nested editable options
-          Object.entries(config).forEach(([subKey, subOption]) => {
-            if (["value", "editable", "type", "FriendlyName"].includes(subKey)) return;
-            if (typeof subOption === "object" && "value" in subOption && "type" in subOption) {
-              const subWrapper = document.createElement("div");
-              subWrapper.style.marginTop = "0.5rem";
-
-              const subLabel = document.createElement("label");
-              subLabel.textContent = subOption.FriendlyName || subKey;
-              subLabel.style.display = "block";
-              subLabel.style.fontWeight = "500";
-              subWrapper.appendChild(subLabel);
-
-              const subInput = document.createElement("input");
-              subInput.type = subOption.type === "Integer" ? "number" : "text";
-              subInput.value = subOption.value;
-              subInput.style.width = "100%";
-
-              subInput.addEventListener("input", () => {
-                options[key][subKey].value = subOption.type === "Integer"
-                  ? parseInt(subInput.value, 10)
-                  : subInput.value;
-                generateGroupName();
-              });
-
-              // if the parent is a Boolean switch, link disable state
-              if (config.type === "Boolean" && input) {
-                subInput.disabled = !input.checked;
-                input.addEventListener("change", () => {
-                  subInput.disabled = !input.checked;
-                });
-              }
-
-              // Group wrapper for sub-options to visually indent and group
-              const groupWrapper = document.createElement("div");
-              groupWrapper.style.marginLeft = "1.25rem";
-              groupWrapper.style.paddingLeft = "0.75rem";
-              groupWrapper.style.borderLeft = "2px solid #ccc";
-              groupWrapper.style.marginTop = "0.5rem";
-
-              subWrapper.appendChild(subInput);
-              groupWrapper.appendChild(subWrapper);
-              // If parent is Boolean, append groupWrapper to parent wrapper, else to container
-              if (config.type === "Boolean") {
-                wrapper.appendChild(groupWrapper);
-              } else {
-                container.appendChild(groupWrapper);
-              }
-            }
+            subWrapper.appendChild(subInput);
+            groupWrapper.appendChild(subWrapper);
           });
-          // For Boolean, append wrapper to container after suboptions are appended
-          if (config.type === "Boolean") {
-            container.appendChild(wrapper);
-          }
+
+          wrapper.appendChild(groupWrapper);
+          container.appendChild(wrapper);
         });
       }
 

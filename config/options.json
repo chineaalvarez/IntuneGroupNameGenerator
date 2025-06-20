@@ -1,34 +1,39 @@
 {
   "WhitespaceReplacement": {
-    "value": "",
-    "FriendlyName": "Whitespace replacement",
+    "FriendlyName": "Whitespace character",
+    "enabled": true,
     "editable": true,
-    "type": "Boolean",
-    "Character": {
-      "value": "_",
-      "type": "Text"
+    "config": {
+      "Character": {
+        "value": "_",
+        "type": "Text"
+      }
     }
   },
   "MaxLength": {
     "FriendlyName": "Max length",
-    "value": 50,
+    "enabled": true,
     "editable": true,
-    "type": "Integer"
+
+    "config": {
+      "value": 50,
+      "type": "Integer"
+    }
   },
   "Uppercase": {
     "FriendlyName": "Convert to uppercase",
-    "value": true,
-    "editable": true,
-    "type": "Boolean"
+    "enabled": true,
+    "editable": true
   },
   "IncludeTimestamp": {
-    "FriendlyName": "Include timestamp",
-    "value": true,
+    "FriendlyName": "Timestamp format",
+    "enabled": true,
     "editable": true,
-    "type": "Boolean",
-    "format": {
-      "value": "DDMMYYYY",
-      "type": "Text"
+    "config": {
+      "format": {
+        "value": "DDMMYYYY",
+        "type": "Text"
+      }
     }
   }
 }
