@@ -425,7 +425,7 @@
 
         if (options.IncludeTimestamp?.enabled) {
           const now = new Date();
-          let formatted = options.IncludeTimestamp.config?.format?.value || "YYYYMMDD-HHmm";
+          let formatted = options.IncludeTimestamp.config?.Format?.value || "YYYYMMDD-HHmm";
           formatted = formatted
             .replace("YYYY", now.getFullYear())
             .replace("MM", String(now.getMonth() + 1).padStart(2, "0"))
@@ -440,7 +440,7 @@
         }
 
         if (options.MaxLength?.enabled) {
-          const maxLen = parseInt(options.MaxLength.config?.value, 10);
+          const maxLen = parseInt(options.MaxLength.config?.Length?.value, 10);
           if (!isNaN(maxLen) && groupName.length > maxLen) {
             output.textContent = `❌ Error: Group name exceeds the maximum allowed length of ${maxLen} characters.`;
             output.style.color = "red";
