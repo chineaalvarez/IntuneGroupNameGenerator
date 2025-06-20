@@ -160,6 +160,15 @@
           console.error("Loading error:", err);
         });
       function createOptionsPanel(optionsConfig) {
+        // 📋 Logging which options are editable
+        console.log("📋 Opciones marcadas como editable:");
+        Object.entries(optionsConfig).forEach(([key, setting]) => {
+          if (setting.editable) {
+            console.log(`✅ ${key} es editable`);
+          } else {
+            console.log(`❌ ${key} NO es editable (no debe mostrarse en el panel)`);
+          }
+        });
         const container = document.getElementById("optionsContainer");
         container.innerHTML = "";
 
