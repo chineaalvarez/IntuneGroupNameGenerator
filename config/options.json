@@ -1,20 +1,28 @@
 {
   "WhitespaceReplacement": {
     "value": "",
+    "FriendlyName": "Whitespace replacement",
     "editable": true,
-    "type": "Text"
+    "type": "Boolean",
+    "Character": {
+      "value": "_",
+      "type": "Text"
+    }
   },
   "MaxLength": {
+    "FriendlyName": "Max length",
     "value": 50,
     "editable": true,
     "type": "Integer"
   },
   "Uppercase": {
+    "FriendlyName": "Convert to uppercase",
     "value": true,
     "editable": true,
     "type": "Boolean"
   },
   "IncludeTimestamp": {
+    "FriendlyName": "Include timestamp",
     "value": true,
     "editable": true,
     "type": "Boolean",
