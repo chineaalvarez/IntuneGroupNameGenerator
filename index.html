@@ -177,15 +177,22 @@
             input.checked = config.value;
             input.style.marginRight = "0.5rem";
 
+            // New structure: label is block, not flex, and checkbox + text in a flex div
+            const label = document.createElement("label");
+            label.style.display = "block";
+            label.style.fontWeight = "500";
+
+            const checkboxWrapper = document.createElement("div");
+            checkboxWrapper.style.display = "flex";
+            checkboxWrapper.style.alignItems = "center";
+            checkboxWrapper.style.gap = "0.5rem";
+
             const labelText = document.createElement("span");
             labelText.textContent = config.FriendlyName || key;
 
-            const label = document.createElement("label");
-            label.style.display = "flex";
-            label.style.alignItems = "center";
-            label.style.fontWeight = "500";
-            label.appendChild(input);
-            label.appendChild(labelText);
+            checkboxWrapper.appendChild(input);
+            checkboxWrapper.appendChild(labelText);
+            label.appendChild(checkboxWrapper);
 
             input.addEventListener("change", () => {
               options[key].value = input.checked;
@@ -266,7 +273,7 @@
 
               // Group wrapper for sub-options to visually indent and group
               const groupWrapper = document.createElement("div");
-              groupWrapper.style.marginLeft = "1rem";
+              groupWrapper.style.marginLeft = "1.25rem";
               groupWrapper.style.paddingLeft = "0.75rem";
               groupWrapper.style.borderLeft = "2px solid #ccc";
               groupWrapper.style.marginTop = "0.5rem";
