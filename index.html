@@ -178,15 +178,16 @@
             input.style.marginRight = "0.5rem";
             input.style.width = "0";
 
-            // New structure: label is block, not flex, and checkbox + text in a flex div
+            // New structure: label is block, not flex, and checkbox + text in a grid div
             const label = document.createElement("label");
             label.style.display = "block";
             label.style.fontWeight = "500";
 
             const checkboxWrapper = document.createElement("div");
-            checkboxWrapper.style.display = "flex";
+            checkboxWrapper.style.display = "grid";
+            checkboxWrapper.style.gridTemplateColumns = "auto 1fr";
             checkboxWrapper.style.alignItems = "center";
-            checkboxWrapper.style.gap = "0.5rem";
+            checkboxWrapper.style.columnGap = "0.5rem";
 
             const labelText = document.createElement("span");
             labelText.textContent = config.FriendlyName || key;
