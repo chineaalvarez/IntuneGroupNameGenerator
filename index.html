@@ -69,6 +69,21 @@
         text-align: center;
       }
 
+      #copyButton {
+        display: block;
+        margin: 1rem auto;
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 6px;
+        background-color: #007acc;
+        color: white;
+        cursor: pointer;
+      }
+      #copyButton:hover {
+        background-color: #005f99;
+      }
+
       @media (max-width: 600px) {
         body {
           padding: 1rem;
@@ -84,6 +99,7 @@
     <h1>Intune Group Name Generator</h1>
     <div id="formContainer"></div>
     <div id="output"></div>
+    <button id="copyButton" onclick="copyToClipboard()">Copy</button>
 
     <script>
       let schema;
@@ -289,6 +305,17 @@
 
         output.textContent = groupName;
         output.style.color = "#004a80";
+      }
+
+      function copyToClipboard() {
+        const output = document.getElementById("output");
+        if (!output.textContent) return;
+
+        navigator.clipboard.writeText(output.textContent).then(() => {
+          alert("Group name copied to clipboard!");
+        }).catch(err => {
+          console.error("Failed to copy text: ", err);
+        });
       }
     </script>
   </body>
