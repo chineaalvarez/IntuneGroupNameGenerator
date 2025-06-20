@@ -1,7 +1,84 @@
 {
-  "platform": ["WIN", "IOS", "MAC", "AND"],
-  "entity": ["D", "U"],
-  "type": ["DYN", "STA"],
-  "purpose": ["APPS", "SECURITY", "COMPLIANCE", "UPDATE", "ONBOARDING", "DEPLOYMENT", "MONITORING", "TESTING"],
-  "intent": ["AVAILABLE", "REQUIRED", "UNINSTALL"]
+  "Fields": [
+    {
+      "Service": {
+        "FieldType": "Static",
+        "Value": "INT",
+        "Delimiter": "-"
+      }
+    },
+    {
+      "Platform": {
+        "FieldType": "Predefined",
+        "Values": [
+          { "FriendlyName": "Windows", "Value": "WIN" },
+          { "FriendlyName": "iOS", "Value": "IOS" },
+          { "FriendlyName": "macOS", "Value": "MAC" },
+          { "FriendlyName": "Android", "Value": "AND" }
+        ],
+        "Delimiter": "-"
+      }
+    },
+    {
+      "Membership": {
+        "FieldType": "Predefined",
+        "Values": [
+          { "FriendlyName": "Devices", "Value": "D" },
+          { "FriendlyName": "Users", "Value": "U" }
+        ],
+        "Delimiter": "-"
+      }
+    },
+    {
+      "Purpose": {
+        "FieldType": "Predefined",
+        "Values": [
+          {
+            "FriendlyName": "Applications",
+            "Value": "APPS",
+            "SubFields": [
+              {
+                "Intent": {
+                  "FieldType": "Predefined",
+                  "Values": [
+                    { "FriendlyName": "Required", "Value": "REQUIRED" },
+                    { "FriendlyName": "Uninstall", "Value": "UNINSTALL" },
+                    { "FriendlyName": "Available", "Value": "AVAILABLE" }
+                  ],
+                  "Delimiter": "_"
+                }
+              },
+              {
+                "AppName": {
+                  "FieldType": "FreeText",
+                  "Delimiter": "_"
+                }
+              },
+              {
+                "Version": {
+                  "FieldType": "FreeText",
+                  "Delimiter": "_"
+                }
+              }
+            ],
+            "HideFields": ["Scope"]
+          },
+          { "FriendlyName": "Security", "Value": "SECURITY" },
+          { "FriendlyName": "Compliance", "Value": "COMPLIANCE" },
+          { "FriendlyName": "Updates", "Value": "UPDATE" },
+          { "FriendlyName": "Onboarding", "Value": "ONBOARDING" },
+          { "FriendlyName": "Deployment", "Value": "DEPLOYMENT" },
+          { "FriendlyName": "Monitoring", "Value": "MONITORING" },
+          { "FriendlyName": "Testing", "Value": "TESTING" }
+        ],
+        "Delimiter": "-"
+      }
+    },
+    {
+      "Scope": {
+        "FieldType": "FreeText",
+        "Delimiter": "-"
+      }
+    }
+  ]
 }
