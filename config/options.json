@@ -15,8 +15,10 @@
     "enabled": true,
     "editable": true,
     "config": {
-      "value": 50,
-      "type": "Integer"
+      "Length": {
+        "value": 50,
+        "type": "Integer"
+      }
     }
   },
   "Uppercase": {
@@ -29,7 +31,7 @@
     "enabled": true,
     "editable": true,
     "config": {
-      "format": {
+      "Format": {
         "value": "DDMMYYYY",
         "type": "Text"
       }
