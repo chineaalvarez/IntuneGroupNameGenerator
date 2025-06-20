@@ -229,7 +229,10 @@
             subInput.addEventListener("input", () => {
               options[key].config[subKey].value =
                 subOption.type === "Integer" ? parseInt(subInput.value, 10) : subInput.value;
-              generateGroupName();
+
+              if (options[key].enabled) {
+                generateGroupName();
+              }
             });
 
             subInput.disabled = !checkbox.checked;
@@ -249,9 +252,8 @@
             groupWrapper.appendChild(subWrapper);
           });
 
-          if (groupWrapper.children.length > 0) {
-            wrapper.appendChild(groupWrapper);
-          }
+          // Always append groupWrapper, even if empty
+          wrapper.appendChild(groupWrapper);
           container.appendChild(wrapper);
         });
       }
@@ -428,12 +430,13 @@
           groupName = groupName.toUpperCase();
         }
 
+        const maxLen = parseInt(options.MaxLength?.config?.value, 10);
         if (
           options.MaxLength?.enabled &&
-          typeof options.MaxLength.config?.value === "number" &&
-          groupName.length > options.MaxLength.config.value
+          !isNaN(maxLen) &&
+          groupName.length > maxLen
         ) {
-          output.textContent = `❌ Error: Group name exceeds the maximum allowed length of ${options.MaxLength.config.value} characters.`;
+          output.textContent = `❌ Error: Group name exceeds the maximum allowed length of ${maxLen} characters.`;
           output.style.color = "red";
           return;
         }
