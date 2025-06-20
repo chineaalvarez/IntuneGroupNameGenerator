@@ -352,7 +352,10 @@
       }
 
       function sanitize(value) {
-        if (options.WhitespaceReplacement?.enabled && typeof options.WhitespaceReplacement?.config?.Character?.value === "string") {
+        if (
+          options.WhitespaceReplacement?.enabled &&
+          typeof options.WhitespaceReplacement?.config?.Character?.value === "string"
+        ) {
           value = value.replace(/\s+/g, options.WhitespaceReplacement.config.Character.value);
         }
         return value;
@@ -410,7 +413,11 @@
           groupName = groupName.toUpperCase();
         }
 
-        if (options.MaxLength?.enabled && typeof options.MaxLength.config?.value === "number" && groupName.length > options.MaxLength.config.value) {
+        if (
+          options.MaxLength?.enabled &&
+          typeof options.MaxLength.config?.value === "number" &&
+          groupName.length > options.MaxLength.config.value
+        ) {
           output.textContent = `❌ Error: Group name exceeds the maximum allowed length of ${options.MaxLength.config.value} characters.`;
           output.style.color = "red";
           return;
