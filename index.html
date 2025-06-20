@@ -1,19 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Intune Group Name Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    .field-block { margin-bottom: 10px; }
-    label { font-weight: bold; display: block; }
-    .hidden { display: none; }
+    body {
+      font-family: system-ui, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.8rem;
+    }
+
+    #formContainer {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .field-block {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    .subfield {
+      margin-top: 1rem;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #output {
+      max-width: 600px;
+      margin: 2rem auto 0;
+      font-size: 1.1rem;
+      font-weight: bold;
+      word-break: break-word;
+      background: #eef6ff;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #cce2ff;
+      color: #004a80;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+
+      #formContainer {
+        padding: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
   <h1>Intune Group Name Generator</h1>
   <div id="formContainer"></div>
-  <button onclick="generateGroupName()">Generate</button>
-  <p><strong>Result:</strong> <span id="output"></span></p>
+  <div id="output"></div>
 
   <script>
     let schema;
@@ -23,6 +93,7 @@
       .then(data => {
         schema = data;
         createFormFromSchema(schema);
+        generateGroupName(); // Initial call
       })
       .catch(err => {
         document.getElementById("formContainer").innerHTML = "<p>Error loading schema</p>";
@@ -44,55 +115,56 @@
         label.textContent = key;
         block.appendChild(label);
 
+        let input;
+
         if (config.FieldType === "Static") {
-          const input = document.createElement("input");
+          input = document.createElement("input");
           input.type = "text";
           input.value = config.Value;
           input.disabled = true;
-          input.dataset.key = key;
-          block.appendChild(input);
         } else if (config.FieldType === "FreeText") {
-          const input = document.createElement("input");
+          input = document.createElement("input");
           input.type = "text";
           input.placeholder = key;
-          input.dataset.key = key;
-          block.appendChild(input);
+          input.addEventListener("input", generateGroupName);
         } else if (config.FieldType === "Predefined") {
-          const select = document.createElement("select");
-          select.dataset.key = key;
+          input = document.createElement("select");
 
           const defaultOpt = document.createElement("option");
           defaultOpt.value = '';
           defaultOpt.textContent = `Select ${key}`;
-          select.appendChild(defaultOpt);
+          input.appendChild(defaultOpt);
 
           config.Values.forEach(v => {
             const option = document.createElement("option");
             option.value = v.Value;
             option.textContent = v.FriendlyName;
-            select.appendChild(option);
+            input.appendChild(option);
           });
 
-          select.addEventListener("change", () => {
-            const selected = config.Values.find(v => v.Value === select.value);
-            handleDynamicSubfields(selected, config, select);
+          input.addEventListener("change", () => {
+            const selected = config.Values.find(v => v.Value === input.value);
+            handleDynamicSubfields(selected, config, key);
+            generateGroupName();
           });
-
-          block.appendChild(select);
         }
 
+        input.dataset.key = key;
+        block.appendChild(input);
         container.appendChild(block);
       });
     }
 
-    function handleDynamicSubfields(selected, config, parentElement) {
+    function handleDynamicSubfields(selected, config, parentKey) {
       const container = document.getElementById("formContainer");
 
+      // Remove old subfields
       document.querySelectorAll(".subfield").forEach(e => e.remove());
       document.querySelectorAll(".hidden").forEach(e => e.classList.remove("hidden"));
 
       if (!selected) return;
 
+      // Hide fields
       if (selected.HideFields) {
         selected.HideFields.forEach(fieldName => {
           const el = document.querySelector(`[data-field-name="${fieldName}"]`);
@@ -100,6 +172,7 @@
         });
       }
 
+      // Add subfields
       if (selected.SubFields) {
         selected.SubFields.forEach(sub => {
           const subKey = Object.keys(sub)[0];
@@ -115,6 +188,7 @@
           if (subConfig.FieldType === "FreeText") {
             input = document.createElement("input");
             input.type = "text";
+            input.addEventListener("input", generateGroupName);
           } else if (subConfig.FieldType === "Predefined") {
             input = document.createElement("select");
             subConfig.Values.forEach(opt => {
@@ -123,6 +197,7 @@
               option.textContent = opt.FriendlyName;
               input.appendChild(option);
             });
+            input.addEventListener("change", generateGroupName);
           }
 
           input.dataset.key = subKey;
@@ -139,10 +214,10 @@
       schema.Fields.forEach(field => {
         const key = Object.keys(field)[0];
         const config = field[key];
-        const block = document.querySelector(`[data-field-name="${key}"]`);
+        const block = container.querySelector(`[data-field-name="${key}"]`);
         if (block?.classList.contains("hidden")) return;
 
-        const input = container.querySelector(`[data-key="${key}"]`);
+        const input = block.querySelector(`[data-key="${key}"]`);
         if (input && input.value) {
           groupName += input.value + config.Delimiter;
         }
