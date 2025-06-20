@@ -2,6 +2,6 @@
   "platform": ["WIN", "IOS", "MAC", "AND"],
   "entity": ["D", "U"],
   "type": ["DYN", "STA"],
-  "purpose": ["APPS", "SECURITY", "COMPLIANCE", "UPDATE", "ONBOARDING", "DEPLOYMENT", "MONITORING", "TESTING"]
+  "purpose": ["APPS", "SECURITY", "COMPLIANCE", "UPDATE", "ONBOARDING", "DEPLOYMENT", "MONITORING", "TESTING"],
   "intent": ["AVAILABLE", "REQUIRED", "UNINSTALL"]
 }
