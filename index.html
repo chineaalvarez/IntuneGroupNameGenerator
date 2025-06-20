@@ -89,8 +89,8 @@
       let schema;
       let options = {};
       Promise.all([
-        fetch("../config/schema.json").then((res) => res.json()),
-        fetch("../config/options.json")
+        fetch("/config/schema.json").then((res) => res.json()),
+        fetch("/config/options.json")
           .then((res) => res.json())
           .catch(() => ({})),
       ])
