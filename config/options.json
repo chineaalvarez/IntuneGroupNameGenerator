@@ -1,5 +1,8 @@
 {
-  "WhitespaceReplacement": "_",
+  "WhitespaceReplacement":"",
   "TrimFields": true,
-  "MaxLength": 40
+  "MaxLength": 50,
+  "Uppercase": true,
+  "IncludeTimestamp": true,
+  "TimestampFormat": "DDMMYYYY"
 }
