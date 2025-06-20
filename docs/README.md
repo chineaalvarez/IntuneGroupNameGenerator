@@ -203,7 +203,8 @@ https://<your-username>.github.io/<your-repo-name>/
 
 ## 🖼️ Screenshot
 
-*You can add a screenshot of the UI here (e.g., `screenshot.png`).*
+![image](https://github.com/user-attachments/assets/232024c9-f3e3-48fb-b68a-7b8b4315e46b)
+
 
 ---
 
