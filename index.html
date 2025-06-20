@@ -169,23 +169,43 @@
           const wrapper = document.createElement("div");
           wrapper.style.marginBottom = "0.75rem";
 
-          const label = document.createElement("label");
-          label.textContent = key;
-          label.style.display = "block";
-          label.style.fontWeight = "500";
-          wrapper.appendChild(label);
-
-          let input;
-
           if (config.type === "Boolean") {
-            input = document.createElement("input");
+            const input = document.createElement("input");
             input.type = "checkbox";
             input.checked = config.value;
+            input.style.marginRight = "0.5rem";
+
+            const labelText = document.createElement("span");
+            labelText.textContent = config.FriendlyName || key;
+
+            const label = document.createElement("label");
+            label.style.display = "flex";
+            label.style.alignItems = "center";
+            label.style.fontWeight = "500";
+            label.appendChild(input);
+            label.appendChild(labelText);
+
             input.addEventListener("change", () => {
               options[key].value = input.checked;
               generateGroupName();
             });
-          } else if (config.type === "Integer" || config.type === "Text") {
+
+            wrapper.appendChild(label);
+            container.appendChild(wrapper);
+            return;
+          }
+
+          const label = document.createElement("label");
+          label.textContent = config.FriendlyName || key;
+          label.style.display = "block";
+          label.style.fontWeight = "500";
+          if (config.type !== "Boolean") {
+            wrapper.appendChild(label);
+          }
+
+          let input;
+
+          if (config.type === "Integer" || config.type === "Text") {
             input = document.createElement("input");
             input.type = config.type === "Integer" ? "number" : "text";
             input.value = config.value;
@@ -220,7 +240,7 @@
             formatWrapper.style.marginTop = "0.5rem";
 
             const formatLabel = document.createElement("label");
-            formatLabel.textContent = "TimestampFormat";
+            formatLabel.textContent = config.format.FriendlyName || "TimestampFormat";
             formatLabel.style.display = "block";
             formatLabel.style.fontWeight = "500";
             formatWrapper.appendChild(formatLabel);
