@@ -12,26 +12,15 @@
     <div class="grid grid-cols-2 gap-4 mb-4">
       <div>
         <label class="block font-medium mb-1">Platform</label>
-        <select id="platform" class="w-full p-2 rounded border uppercase">
-          <option value="WIN">WIN</option>
-          <option value="IOS">IOS</option>
-          <option value="MAC">MAC</option>
-          <option value="AND">AND</option>
-        </select>
+        <select id="platform" class="w-full p-2 rounded border uppercase"></select>
       </div>
       <div>
         <label class="block font-medium mb-1">Entity</label>
-        <select id="entity" class="w-full p-2 rounded border uppercase">
-          <option value="D">D (Devices)</option>
-          <option value="U">U (Users)</option>
-        </select>
+        <select id="entity" class="w-full p-2 rounded border uppercase"></select>
       </div>
       <div>
         <label class="block font-medium mb-1">Type</label>
-        <select id="type" class="w-full p-2 rounded border uppercase">
-          <option value="Dyn">DYN</option>
-          <option value="Sta">STA</option>
-        </select>
+        <select id="type" class="w-full p-2 rounded border uppercase"></select>
       </div>
       <div>
         <label class="block font-medium mb-1">Scope (Group Membership)</label>
@@ -39,7 +28,7 @@
       </div>
       <div class="col-span-2">
         <label class="block font-medium mb-1">Purpose</label>
-        <input id="purpose" type="text" class="w-full p-2 rounded border" placeholder="e.g. Apps, Security" />
+        <select id="purpose" class="w-full p-2 rounded border uppercase"></select>
       </div>
     </div>
     <div class="mt-4">
@@ -51,20 +40,40 @@
   <script>
     const fields = ['platform', 'entity', 'type', 'scope', 'purpose'];
 
+    async function loadAllOptions() {
+      try {
+        const response = await fetch('options.json');
+        const optionsData = await response.json();
+
+        for (const id of ['platform', 'entity', 'type', 'purpose']) {
+          const select = document.getElementById(id);
+          optionsData[id].forEach(value => {
+            const opt = document.createElement('option');
+            opt.value = value;
+            opt.textContent = value;
+            select.appendChild(opt);
+          });
+        }
+      } catch (error) {
+        console.error('Failed to load options.json:', error);
+      }
+    }
+
     fields.forEach(id => {
-      document.getElementById(id).addEventListener('input', updateOutput);
+      const element = document.getElementById(id);
+      element.addEventListener('input', updateOutput);
     });
 
     function updateOutput() {
       const values = fields.map(id => {
         let value = document.getElementById(id).value.trim().replace(/\s+/g, '_');
-        return ['platform', 'entity', 'type'].includes(id) ? value.toUpperCase() : value;
+        return ['platform', 'entity', 'type', 'purpose'].includes(id) ? value.toUpperCase() : value;
       });
       const name = `INT-${values.join('-')}`;
       document.getElementById('output').textContent = name;
     }
 
-    updateOutput();
+    loadAllOptions().then(updateOutput);
   </script>
 </body>
 </html>
