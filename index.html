@@ -12,7 +12,7 @@
     <div class="grid grid-cols-2 gap-4 mb-4">
       <div>
         <label class="block font-medium mb-1">Platform</label>
-        <select id="platform" class="w-full p-2 rounded border">
+        <select id="platform" class="w-full p-2 rounded border uppercase">
           <option value="WIN">WIN</option>
           <option value="IOS">IOS</option>
           <option value="MAC">MAC</option>
@@ -21,16 +21,16 @@
       </div>
       <div>
         <label class="block font-medium mb-1">Entity</label>
-        <select id="entity" class="w-full p-2 rounded border">
+        <select id="entity" class="w-full p-2 rounded border uppercase">
           <option value="D">D (Devices)</option>
           <option value="U">U (Users)</option>
         </select>
       </div>
       <div>
         <label class="block font-medium mb-1">Type</label>
-        <select id="type" class="w-full p-2 rounded border">
-          <option value="Dyn">Dyn</option>
-          <option value="Sta">Sta</option>
+        <select id="type" class="w-full p-2 rounded border uppercase">
+          <option value="Dyn">DYN</option>
+          <option value="Sta">STA</option>
         </select>
       </div>
       <div>
@@ -56,9 +56,10 @@
     });
 
     function updateOutput() {
-      const values = fields.map(id =>
-        document.getElementById(id).value.trim().replace(/\s+/g, '_')
-      );
+      const values = fields.map(id => {
+        let value = document.getElementById(id).value.trim().replace(/\s+/g, '_');
+        return ['platform', 'entity', 'type'].includes(id) ? value.toUpperCase() : value;
+      });
       const name = `INT-${values.join('-')}`;
       document.getElementById('output').textContent = name;
     }
