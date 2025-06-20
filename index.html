@@ -87,18 +87,20 @@
 
   <script>
     let schema;
+    let options = {};
 
-    fetch('schema.json')
-      .then(res => res.json())
-      .then(data => {
-        schema = data;
-        createFormFromSchema(schema);
-        generateGroupName(); // Initial render
-      })
-      .catch(err => {
-        document.getElementById("formContainer").innerHTML = "<p>Error loading schema</p>";
-        console.error("Error loading schema:", err);
-      });
+    Promise.all([
+      fetch('schema.json').then(res => res.json()),
+      fetch('options.json').then(res => res.json()).catch(() => ({}))
+    ]).then(([schemaData, optionsData]) => {
+      schema = schemaData;
+      options = optionsData;
+      createFormFromSchema(schema);
+      generateGroupName();
+    }).catch(err => {
+      document.getElementById("formContainer").innerHTML = "<p>Error loading configuration</p>";
+      console.error("Loading error:", err);
+    });
 
     function createFormFromSchema(schema) {
       const container = document.getElementById("formContainer");
@@ -158,13 +160,11 @@
     function handleDynamicSubfields(selected, config, parentKey) {
       const container = document.getElementById("formContainer");
 
-      // Remove old subfields
       document.querySelectorAll(".subfield").forEach(e => e.remove());
       document.querySelectorAll(".hidden").forEach(e => e.classList.remove("hidden"));
 
       if (!selected) return;
 
-      // Hide fields
       if (selected.HideFields) {
         selected.HideFields.forEach(fieldName => {
           const el = document.querySelector(`[data-field-name="${fieldName}"]`);
@@ -172,7 +172,6 @@
         });
       }
 
-      // Add subfields
       if (selected.SubFields) {
         selected.SubFields.forEach(sub => {
           const subKey = Object.keys(sub)[0];
@@ -207,6 +206,13 @@
       }
     }
 
+    function sanitize(value) {
+      if (typeof options.WhitespaceReplacement === "string") {
+        return value.replace(/\s+/g, options.WhitespaceReplacement);
+      }
+      return value;
+    }
+
     function generateGroupName() {
       let groupName = "";
       const container = document.getElementById("formContainer");
@@ -222,7 +228,7 @@
 
         const selected = config.Values?.find(v => v.Value === input.value);
 
-        groupName += input.value;
+        groupName += sanitize(input.value);
 
         if (selected?.SubFields) {
           selected.SubFields.forEach(sub => {
@@ -230,7 +236,7 @@
             const subConfig = sub[subKey];
             const subInput = container.querySelector(`[data-key="${subKey}"]`);
             if (subInput?.value) {
-              groupName += subConfig.Delimiter + subInput.value;
+              groupName += subConfig.Delimiter + sanitize(subInput.value);
             }
           });
           groupName += config.Delimiter;
