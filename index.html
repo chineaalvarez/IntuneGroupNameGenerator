@@ -168,6 +168,9 @@
 
           const wrapper = document.createElement("div");
           wrapper.style.marginBottom = "1rem";
+          wrapper.style.display = "flex";
+          wrapper.style.flexDirection = "column";
+          wrapper.style.alignItems = "flex-start";
 
           const checkbox = document.createElement("input");
           checkbox.type = "checkbox";
@@ -181,9 +184,10 @@
           label.style.fontWeight = "600";
 
           const header = document.createElement("div");
-          header.style.display = "flex";
+          header.style.display = "grid";
+          header.style.gridTemplateColumns = "auto 1fr";
           header.style.alignItems = "center";
-          header.style.gap = "0.5rem";
+          header.style.columnGap = "0.5rem";
           header.appendChild(checkbox);
           header.appendChild(label);
           wrapper.appendChild(header);
@@ -228,7 +232,9 @@
             groupWrapper.appendChild(subWrapper);
           });
 
-          wrapper.appendChild(groupWrapper);
+          if (groupWrapper.children.length > 0) {
+            wrapper.appendChild(groupWrapper);
+          }
           container.appendChild(wrapper);
         });
       }
