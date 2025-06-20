@@ -13,7 +13,7 @@
   "MaxLength": {
     "FriendlyName": "Max length",
     "enabled": true,
-    "editable": true,
+    "editable": false,
     "config": {
       "Length": {
         "value": 50,
@@ -23,13 +23,13 @@
   },
   "Uppercase": {
     "FriendlyName": "Convert to uppercase",
-    "enabled": true,
+    "enabled": false,
     "editable": true
   },
   "IncludeTimestamp": {
     "FriendlyName": "Timestamp format",
-    "enabled": true,
-    "editable": true,
+    "enabled": false,
+    "editable": false,
     "config": {
       "Format": {
         "value": "DDMMYYYY",
