@@ -311,9 +311,6 @@
       }
 
       function sanitize(value) {
-        if (options.TrimFields?.value) {
-          value = value.trim();
-        }
         if (typeof options.WhitespaceReplacement?.value === "string") {
           value = value.replace(/\s+/g, options.WhitespaceReplacement.value);
         }

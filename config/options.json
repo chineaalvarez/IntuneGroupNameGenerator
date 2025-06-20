@@ -4,11 +4,6 @@
     "editable": true,
     "type": "Text"
   },
-  "TrimFields": {
-    "value": true,
-    "editable": true,
-    "type": "Boolean"
-  },
   "MaxLength": {
     "value": 50,
     "editable": true,
