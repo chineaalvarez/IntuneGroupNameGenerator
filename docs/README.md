@@ -88,42 +88,61 @@ Each `SubField` is declared inside a value's definition and follows the same str
 
 For example, under the `Purpose` field:
 
-```
-{
-  "Purpose": {
-    "FieldType": "Predefined",
-    "Values": [
-      {
-        "FriendlyName": "Applications",
-        "Value": "APPS",
-        "SubFields": [
+```json
+      "Purpose": {
+        "FieldType": "Predefined",
+        "Values": [
           {
-            "Intent": {
-              "FieldType": "Predefined",
-              "Values": [
-                { "FriendlyName": "Required", "Value": "REQ" },
-                { "FriendlyName": "Available", "Value": "AVL" },
-                { "FriendlyName": "Uninstall", "Value": "UNINST" }
-              ],
-              "Delimiter": "-"
-            }
-          }
-        ]
+            "FriendlyName": "Applications",
+            "Value": "APPS",
+            "SubFields": [
+              {
+                "Intent": {
+                  "FieldType": "Predefined",
+                  "Values": [
+                    { "FriendlyName": "Required", "Value": "REQUIRED" },
+                    { "FriendlyName": "Uninstall", "Value": "UNINSTALL" },
+                    { "FriendlyName": "Available", "Value": "AVAILABLE" }
+                  ],
+                  "Delimiter": "_"
+                }
+              },
+              {
+                "AppName": {
+                  "FieldType": "FreeText",
+                  "Delimiter": "_"
+                }
+              },
+              {
+                "Version": {
+                  "FieldType": "FreeText",
+                  "Delimiter": "_"
+                }
+              }
+            ],
+            "HideFields": ["Scope"]
+          },
+          { "FriendlyName": "Security", "Value": "SECURITY" },
+          { "FriendlyName": "Compliance", "Value": "COMPLIANCE" },
+          { "FriendlyName": "Updates", "Value": "UPDATE" },
+          { "FriendlyName": "Onboarding", "Value": "ONBOARDING" },
+          { "FriendlyName": "Deployment", "Value": "DEPLOYMENT" },
+          { "FriendlyName": "Monitoring", "Value": "MONITORING" },
+          { "FriendlyName": "Testing", "Value": "TESTING" }
+        ],
+        "Delimiter": "-"
       }
-    ]
-  }
-}
 ```
 
-In this case, selecting `Applications` in the Purpose field prompts the UI to show a second dropdown for `Intent`, allowing for an extended group name like:
+In this case, selecting `Applications` in the Purpose field prompts the UI to show a second dropdown for `Intent`, `AppName` and `Version` allowing for an extended group name like:
 
 ```
-INT-WIN-D-Dyn-Developers-Apps-REQ
+INT-WIN-D-APPS_REQUIRED_Edge_1.0
 ```
 
 The delimiter for each SubField can be customized independently.
 
-#### `HideField` is used to hide fields from the UI when they are no longer needed due to the presence of SubFields.
+`HideField` is used to hide fields from the UI when they are no longer needed due to the presence of SubFields.
 
 ### `config/options.json`
 
