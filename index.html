@@ -224,9 +224,13 @@
             subInput.disabled = !checkbox.checked;
             checkbox.addEventListener("change", () => {
               setting.enabled = checkbox.checked;
-              Array.from(groupWrapper.querySelectorAll("input")).forEach(input => {
-                input.disabled = !checkbox.checked;
-              });
+
+              if (groupWrapper) {
+                Array.from(groupWrapper.querySelectorAll("input")).forEach(input => {
+                  input.disabled = !checkbox.checked;
+                });
+              }
+
               generateGroupName();
             });
 
