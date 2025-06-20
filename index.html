@@ -56,7 +56,9 @@
     });
 
     function updateOutput() {
-      const values = fields.map(id => document.getElementById(id).value.trim());
+      const values = fields.map(id =>
+        document.getElementById(id).value.trim().replace(/\s+/g, '_')
+      );
       const name = `INT-${values.join('-')}`;
       document.getElementById('output').textContent = name;
     }
