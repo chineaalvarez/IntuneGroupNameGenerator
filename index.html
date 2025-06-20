@@ -174,7 +174,7 @@
 
           const checkbox = document.createElement("input");
           checkbox.type = "checkbox";
-          checkbox.checked = setting.enabled;
+          checkbox.checked = options[key].enabled;
           checkbox.id = `chk-${key}`;
           checkbox.style.marginRight = "0.5rem";
 
@@ -223,7 +223,7 @@
 
             subInput.disabled = !checkbox.checked;
             checkbox.addEventListener("change", () => {
-              setting.enabled = checkbox.checked;
+              options[key].enabled = checkbox.checked;
 
               if (groupWrapper) {
                 Array.from(groupWrapper.querySelectorAll("input")).forEach(input => {
