@@ -64,14 +64,24 @@
       element.addEventListener('input', updateOutput);
     });
 
-    function updateOutput() {
-      const values = fields.map(id => {
-        let value = document.getElementById(id).value.trim().replace(/\s+/g, '_');
-        return ['platform', 'entity', 'type', 'purpose'].includes(id) ? value.toUpperCase() : value;
-      });
-      const name = `INT-${values.join('-')}`;
-      document.getElementById('output').textContent = name;
+function updateOutput() {
+  const result = fields.reduce((acc, id) => {
+    let value = document.getElementById(id).value.trim().replace(/\s+/g, '_');
+    if (['platform', 'entity', 'type', 'purpose'].includes(id)) {
+      value = value.toUpperCase();
     }
+    if (id === 'scope') {
+      acc.scope = value;
+    } else {
+      acc.parts.push(value);
+    }
+    return acc;
+  }, { parts: [], scope: '' });
+
+  const name = `INT-${[...result.parts, result.scope].join('-')}`;
+  document.getElementById('output').textContent = name;
+}
+
 
     loadAllOptions().then(updateOutput);
   </script>
