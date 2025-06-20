@@ -22,13 +22,21 @@
         <label class="block font-medium mb-1">Type</label>
         <select id="type" class="w-full p-2 rounded border uppercase"></select>
       </div>
-      <div>
+      <div id="scope-wrapper">
         <label class="block font-medium mb-1">Scope (Group Membership)</label>
         <input id="scope" type="text" class="w-full p-2 rounded border" placeholder="e.g. WSLUsers, SharedPCs, Developers" />
       </div>
-      <div class="col-span-2">
+      <div id="purpose-wrapper" class="col-span-2">
         <label class="block font-medium mb-1">Purpose</label>
         <select id="purpose" class="w-full p-2 rounded border uppercase"></select>
+      </div>
+      <div id="app-fields" class="col-span-2 hidden">
+        <label class="block font-medium mb-1">App Name</label>
+        <input id="appName" type="text" class="w-full p-2 rounded border mb-2" placeholder="e.g. Microsoft Edge" />
+        <label class="block font-medium mb-1">Version</label>
+        <input id="version" type="text" class="w-full p-2 rounded border mb-2" placeholder="e.g. 123.45.67" />
+        <label class="block font-medium mb-1">Intent</label>
+        <select id="intent" class="w-full p-2 rounded border uppercase"></select>
       </div>
     </div>
     <div class="mt-4">
@@ -38,50 +46,73 @@
   </div>
 
   <script>
-    const fields = ['platform', 'entity', 'type', 'scope', 'purpose'];
+    const fields = ['platform', 'entity', 'type'];
 
     async function loadAllOptions() {
       try {
         const response = await fetch('options.json');
         const optionsData = await response.json();
 
-        for (const id of ['platform', 'entity', 'type', 'purpose']) {
+        for (const id of ['platform', 'entity', 'type', 'purpose', 'intent']) {
           const select = document.getElementById(id);
-          optionsData[id].forEach(value => {
-            const opt = document.createElement('option');
-            opt.value = value;
-            opt.textContent = value;
-            select.appendChild(opt);
-          });
+          if (select && optionsData[id]) {
+            optionsData[id].forEach(value => {
+              const opt = document.createElement('option');
+              opt.value = value;
+              opt.textContent = value;
+              select.appendChild(opt);
+            });
+          }
         }
+
+        document.getElementById('purpose').addEventListener('change', toggleAppFields);
       } catch (error) {
         console.error('Failed to load options.json:', error);
       }
     }
 
-    fields.forEach(id => {
-      const element = document.getElementById(id);
-      element.addEventListener('input', updateOutput);
+    function toggleAppFields() {
+      const purpose = document.getElementById('purpose').value;
+      const appFields = document.getElementById('app-fields');
+      const scopeWrapper = document.getElementById('scope-wrapper');
+
+      if (purpose === 'APPS') {
+        appFields.classList.remove('hidden');
+        scopeWrapper.classList.add('hidden');
+      } else {
+        appFields.classList.add('hidden');
+        scopeWrapper.classList.remove('hidden');
+      }
+      updateOutput();
+    }
+
+    function updateOutput() {
+      const base = fields.map(id => {
+        let value = document.getElementById(id).value.trim().replace(/\s+/g, '_');
+        return value.toUpperCase();
+      });
+
+      const purpose = document.getElementById('purpose').value.trim().replace(/\s+/g, '_').toUpperCase();
+
+      if (purpose === 'APPS') {
+        const appName = document.getElementById('appName').value.trim().replace(/\s+/g, '_');
+        const version = document.getElementById('version').value.trim().replace(/\s+/g, '_');
+        const intent = document.getElementById('intent').value.trim().replace(/\s+/g, '_').toUpperCase();
+        base.push(appName, version, intent);
+      } else {
+        base.push(purpose);
+        const scope = document.getElementById('scope').value.trim().replace(/\s+/g, '_');
+        base.push(scope);
+      }
+
+      const name = `INT-${base.join('-')}`;
+      document.getElementById('output').textContent = name;
+    }
+
+    [...fields, 'purpose', 'appName', 'version', 'intent', 'scope'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', updateOutput);
     });
-
-function updateOutput() {
-  const result = fields.reduce((acc, id) => {
-    let value = document.getElementById(id).value.trim().replace(/\s+/g, '_');
-    if (['platform', 'entity', 'type', 'purpose'].includes(id)) {
-      value = value.toUpperCase();
-    }
-    if (id === 'scope') {
-      acc.scope = value;
-    } else {
-      acc.parts.push(value);
-    }
-    return acc;
-  }, { parts: [], scope: '' });
-
-  const name = `INT-${[...result.parts, result.scope].join('-')}`;
-  document.getElementById('output').textContent = name;
-}
-
 
     loadAllOptions().then(updateOutput);
   </script>
