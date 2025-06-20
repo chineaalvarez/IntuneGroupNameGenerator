@@ -178,6 +178,17 @@
           checkbox.id = `chk-${key}`;
           checkbox.style.marginRight = "0.5rem";
 
+          checkbox.addEventListener("change", () => {
+            options[key].enabled = checkbox.checked;
+
+            const affectedInputs = wrapper.querySelectorAll("input[type='text'], input[type='number']");
+            affectedInputs.forEach(input => {
+              if (input !== checkbox) input.disabled = !checkbox.checked;
+            });
+
+            generateGroupName();
+          });
+
           const label = document.createElement("label");
           label.htmlFor = checkbox.id;
           label.textContent = setting.FriendlyName || key;
