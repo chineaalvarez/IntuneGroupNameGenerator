@@ -1,5 +1,5 @@
 {
   "WhitespaceReplacement": "_",
   "TrimFields": true,
-  "MaxLength": 128
+  "MaxLength": 40
 }
