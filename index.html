@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intune Group Name Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900 min-h-screen flex items-center justify-center p-6">
+  <div class="bg-white p-6 rounded-2xl shadow-xl w-full max-w-xl">
+    <h1 class="text-2xl font-bold mb-4">Intune Group Name Generator</h1>
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <label class="block font-medium mb-1">Platform</label>
+        <select id="platform" class="w-full p-2 rounded border">
+          <option value="WIN">WIN</option>
+          <option value="IOS">IOS</option>
+          <option value="MAC">MAC</option>
+          <option value="AND">AND</option>
+        </select>
+      </div>
+      <div>
+        <label class="block font-medium mb-1">Entity</label>
+        <select id="entity" class="w-full p-2 rounded border">
+          <option value="D">D (Devices)</option>
+          <option value="U">U (Users)</option>
+        </select>
+      </div>
+      <div>
+        <label class="block font-medium mb-1">Type</label>
+        <select id="type" class="w-full p-2 rounded border">
+          <option value="Dyn">Dyn</option>
+          <option value="Sta">Sta</option>
+        </select>
+      </div>
+      <div>
+        <label class="block font-medium mb-1">Scope</label>
+        <select id="scope" class="w-full p-2 rounded border">
+          <option value="All">All</option>
+          <option value="CH">CH</option>
+          <option value="EU">EU</option>
+          <option value="US">US</option>
+        </select>
+      </div>
+      <div class="col-span-2">
+        <label class="block font-medium mb-1">Purpose</label>
+        <input id="purpose" type="text" class="w-full p-2 rounded border" placeholder="e.g. Apps, Security" />
+      </div>
+    </div>
+    <div class="mt-4">
+      <h2 class="text-lg font-semibold">Generated Name</h2>
+      <div id="output" class="mt-2 p-3 bg-gray-200 rounded font-mono"></div>
+    </div>
+  </div>
+
+  <script>
+    const fields = ['platform', 'entity', 'type', 'scope', 'purpose'];
+
+    fields.forEach(id => {
+      document.getElementById(id).addEventListener('input', updateOutput);
+    });
+
+    function updateOutput() {
+      const values = fields.map(id => document.getElementById(id).value.trim());
+      const name = `INT-${values.join('-')}`;
+      document.getElementById('output').textContent = name;
+    }
+
+    updateOutput();
+  </script>
+</body>
+</html>
