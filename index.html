@@ -169,8 +169,10 @@
           const wrapper = document.createElement("div");
           wrapper.style.marginBottom = "0.75rem";
 
+          let input; // Declare input in this scope so it's accessible for suboptions
+
           if (config.type === "Boolean") {
-            const input = document.createElement("input");
+            input = document.createElement("input");
             input.type = "checkbox";
             input.checked = config.value;
             input.style.marginRight = "0.5rem";
@@ -198,8 +200,6 @@
             label.style.display = "block";
             label.style.fontWeight = "500";
             wrapper.appendChild(label);
-
-            let input;
 
             if (config.type === "Integer" || config.type === "Text") {
               input = document.createElement("input");
