@@ -2,19 +2,13 @@
 
 This is a simple web-based tool to help generate standardized Microsoft Intune group names following this naming convention:
 
-```
-INT-<Platform>-<Entity>-<Type>-<Scope>-<Purpose>
-```
-
-## 🔧 Fields
-
-| Field    | Description                                 | Example values                             |
-| -------- | ------------------------------------------- | ------------------------------------------ |
-| Platform | Operating system                            | `WIN`, `MAC`, `IOS`, `AND`                 |
-| Entity   | Group entity type                           | `D` (Devices), `U` (Users)                 |
-| Type     | Group type                                  | `Dyn`, `Sta`                               |
-| Scope    | Who the group applies to (membership scope) | `All`, `WSLUsers`, `Developers`, `Interns` |
-| Purpose  | Functional use of the group                 | `Apps`, `Security`, `Compliance`           |
+INT-<Platform>-<Entity>-<Type>-<Scope     | Who the group applies to (membership scope) | `All`, `WSLUsers`, `Developers`, `Interns`, `KioskDevices`, `SharedPCs`, `POS_Terminals` | Field     | Description                                | Example values                          |
+|-----------|--------------------------------------------|------------------------------------------|
+| Platform  | Operating system                           | `WIN`, `MAC`, `IOS`, `AND`              |
+| Entity    | Group entity type                          | `D` (Devices), `U` (Users)              |
+| Type      | Group type                                 | `Dyn`, `Sta`                            |
+| Scope     | Who the group applies to (membership scope) | `All`, `WSLUsers`, `Developers`, `Interns` |
+| Purpose   | Functional use of the group                | `Apps`, `Security`, `Compliance`        |
 
 Spaces in any input are automatically replaced with underscores (`_`).
 
