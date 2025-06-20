@@ -430,15 +430,13 @@
           groupName = groupName.toUpperCase();
         }
 
-        const maxLen = parseInt(options.MaxLength?.config?.value, 10);
-        if (
-          options.MaxLength?.enabled &&
-          !isNaN(maxLen) &&
-          groupName.length > maxLen
-        ) {
-          output.textContent = `❌ Error: Group name exceeds the maximum allowed length of ${maxLen} characters.`;
-          output.style.color = "red";
-          return;
+        if (options.MaxLength?.enabled) {
+          const maxLen = parseInt(options.MaxLength.config?.value, 10);
+          if (!isNaN(maxLen) && groupName.length > maxLen) {
+            output.textContent = `❌ Error: Group name exceeds the maximum allowed length of ${maxLen} characters.`;
+            output.style.color = "red";
+            return;
+          }
         }
 
         output.textContent = groupName;
