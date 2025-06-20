@@ -203,7 +203,7 @@ https://<your-username>.github.io/<your-repo-name>/
 
 ## 🖼️ Screenshot
 
-![image](https://github.com/user-attachments/assets/232024c9-f3e3-48fb-b68a-7b8b4315e46b)
+![image](https://github.com/user-attachments/assets/3d23693e-8356-4306-a6ba-011044396052)
 
 
 ---
