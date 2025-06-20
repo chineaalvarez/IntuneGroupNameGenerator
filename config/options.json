@@ -1,3 +1,5 @@
 {
-  "WhitespaceReplacement": "_"
+  "WhitespaceReplacement": "_",
+  "TrimFields": true,
+  "MaxLength": 128
 }

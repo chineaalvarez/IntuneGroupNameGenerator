@@ -1,252 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Intune Group Name Generator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 2rem;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 2rem;
-      font-size: 1.8rem;
-    }
-
-    #formContainer {
-      max-width: 600px;
-      margin: 0 auto;
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    .field-block {
-      margin-bottom: 1.5rem;
-    }
-
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    input,
-    select {
-      width: 100%;
-      padding: 0.6rem 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 1rem;
-      box-sizing: border-box;
-    }
-
-    .subfield {
-      margin-top: 1rem;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    #output {
-      max-width: 600px;
-      margin: 2rem auto 0;
-      font-size: 1.1rem;
-      font-weight: bold;
-      word-break: break-word;
-      background: #eef6ff;
-      padding: 1rem;
-      border-radius: 8px;
-      border: 1px solid #cce2ff;
-      color: #004a80;
-      text-align: center;
-    }
-
-    @media (max-width: 600px) {
+  <head>
+    <meta charset="UTF-8" />
+    <title>Intune Group Name Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
       body {
-        padding: 1rem;
+        font-family: system-ui, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 2rem;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 1.8rem;
       }
 
       #formContainer {
-        padding: 1rem;
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       }
-    }
-  </style>
-</head>
-<body>
-  <h1>Intune Group Name Generator</h1>
-  <div id="formContainer"></div>
-  <div id="output"></div>
 
-  <script>
-    let schema;
-    let options = {};
+      .field-block {
+        margin-bottom: 1.5rem;
+      }
 
-    Promise.all([
-      fetch('schema.json').then(res => res.json()),
-      fetch('options.json').then(res => res.json()).catch(() => ({}))
-    ]).then(([schemaData, optionsData]) => {
-      schema = schemaData;
-      options = optionsData;
-      createFormFromSchema(schema);
-      generateGroupName();
-    }).catch(err => {
-      document.getElementById("formContainer").innerHTML = "<p>Error loading configuration</p>";
-      console.error("Loading error:", err);
-    });
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
 
-    function createFormFromSchema(schema) {
-      const container = document.getElementById("formContainer");
-      container.innerHTML = '';
+      input,
+      select {
+        width: 100%;
+        padding: 0.6rem 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 1rem;
+        box-sizing: border-box;
+      }
 
-      schema.Fields.forEach(field => {
-        const key = Object.keys(field)[0];
-        const config = field[key];
-        const block = document.createElement("div");
-        block.className = "field-block";
-        block.dataset.fieldName = key;
+      .subfield {
+        margin-top: 1rem;
+      }
 
-        const label = document.createElement("label");
-        label.textContent = key;
-        block.appendChild(label);
+      .hidden {
+        display: none;
+      }
 
-        let input;
+      #output {
+        max-width: 600px;
+        margin: 2rem auto 0;
+        font-size: 1.1rem;
+        font-weight: bold;
+        word-break: break-word;
+        background: #eef6ff;
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid #cce2ff;
+        color: #004a80;
+        text-align: center;
+      }
 
-        if (config.FieldType === "Static") {
-          input = document.createElement("input");
-          input.type = "text";
-          input.value = config.Value;
-          input.disabled = true;
-        } else if (config.FieldType === "FreeText") {
-          input = document.createElement("input");
-          input.type = "text";
-          input.placeholder = key;
-          input.addEventListener("input", generateGroupName);
-        } else if (config.FieldType === "Predefined") {
-          input = document.createElement("select");
-
-          const defaultOpt = document.createElement("option");
-          defaultOpt.value = '';
-          defaultOpt.textContent = `Select ${key}`;
-          input.appendChild(defaultOpt);
-
-          config.Values.forEach(v => {
-            const option = document.createElement("option");
-            option.value = v.Value;
-            option.textContent = v.FriendlyName;
-            input.appendChild(option);
-          });
-
-          input.addEventListener("change", () => {
-            const selected = config.Values.find(v => v.Value === input.value);
-            handleDynamicSubfields(selected, config, key);
-            generateGroupName();
-          });
+      @media (max-width: 600px) {
+        body {
+          padding: 1rem;
         }
 
-        input.dataset.key = key;
-        block.appendChild(input);
-        container.appendChild(block);
-      });
-    }
-
-    function handleDynamicSubfields(selected, config, parentKey) {
-      const container = document.getElementById("formContainer");
-
-      document.querySelectorAll(".subfield").forEach(e => e.remove());
-      document.querySelectorAll(".hidden").forEach(e => e.classList.remove("hidden"));
-
-      if (!selected) return;
-
-      if (selected.HideFields) {
-        selected.HideFields.forEach(fieldName => {
-          const el = document.querySelector(`[data-field-name="${fieldName}"]`);
-          if (el) el.classList.add("hidden");
-        });
+        #formContainer {
+          padding: 1rem;
+        }
       }
+    </style>
+  </head>
+  <body>
+    <h1>Intune Group Name Generator</h1>
+    <div id="formContainer"></div>
+    <div id="output"></div>
 
-      if (selected.SubFields) {
-        selected.SubFields.forEach(sub => {
-          const subKey = Object.keys(sub)[0];
-          const subConfig = sub[subKey];
-          const subBlock = document.createElement("div");
-          subBlock.className = "field-block subfield";
+    <script>
+      let schema;
+      let options = {};
+      Promise.all([
+        fetch("../config/schema.json").then((res) => res.json()),
+        fetch("../config/options.json")
+          .then((res) => res.json())
+          .catch(() => ({})),
+      ])
+        .then(([schemaData, optionsData]) => {
+          schema = schemaData;
+          options = optionsData;
+          createFormFromSchema(schema);
+          generateGroupName();
+        })
+        .catch((err) => {
+          document.getElementById("formContainer").innerHTML =
+            "<p>Error loading configuration</p>";
+          console.error("Loading error:", err);
+        });
+
+      function createFormFromSchema(schema) {
+        const container = document.getElementById("formContainer");
+        container.innerHTML = "";
+
+        schema.Fields.forEach((field) => {
+          const key = Object.keys(field)[0];
+          const config = field[key];
+          const block = document.createElement("div");
+          block.className = "field-block";
+          block.dataset.fieldName = key;
 
           const label = document.createElement("label");
-          label.textContent = subKey;
-          subBlock.appendChild(label);
+          label.textContent = key;
+          block.appendChild(label);
 
           let input;
-          if (subConfig.FieldType === "FreeText") {
+
+          if (config.FieldType === "Static") {
             input = document.createElement("input");
             input.type = "text";
+            input.value = config.Value;
+            input.disabled = true;
+          } else if (config.FieldType === "FreeText") {
+            input = document.createElement("input");
+            input.type = "text";
+            input.placeholder = key;
             input.addEventListener("input", generateGroupName);
-          } else if (subConfig.FieldType === "Predefined") {
+          } else if (config.FieldType === "Predefined") {
             input = document.createElement("select");
-            subConfig.Values.forEach(opt => {
+
+            const defaultOpt = document.createElement("option");
+            defaultOpt.value = "";
+            defaultOpt.textContent = `Select ${key}`;
+            input.appendChild(defaultOpt);
+
+            config.Values.forEach((v) => {
               const option = document.createElement("option");
-              option.value = opt.Value;
-              option.textContent = opt.FriendlyName;
+              option.value = v.Value;
+              option.textContent = v.FriendlyName;
               input.appendChild(option);
             });
-            input.addEventListener("change", generateGroupName);
+
+            input.addEventListener("change", () => {
+              const selected = config.Values.find(
+                (v) => v.Value === input.value
+              );
+              handleDynamicSubfields(selected, config, key);
+              generateGroupName();
+            });
           }
 
-          input.dataset.key = subKey;
-          subBlock.appendChild(input);
-          container.appendChild(subBlock);
+          input.dataset.key = key;
+          block.appendChild(input);
+          container.appendChild(block);
         });
       }
-    }
 
-    function sanitize(value) {
-      if (typeof options.WhitespaceReplacement === "string") {
-        return value.replace(/\s+/g, options.WhitespaceReplacement);
-      }
-      return value;
-    }
+      function handleDynamicSubfields(selected, config, parentKey) {
+        const container = document.getElementById("formContainer");
 
-    function generateGroupName() {
-      let groupName = "";
-      const container = document.getElementById("formContainer");
+        document.querySelectorAll(".subfield").forEach((e) => e.remove());
+        document
+          .querySelectorAll(".hidden")
+          .forEach((e) => e.classList.remove("hidden"));
 
-      schema.Fields.forEach(field => {
-        const key = Object.keys(field)[0];
-        const config = field[key];
-        const block = container.querySelector(`[data-field-name="${key}"]`);
-        if (block?.classList.contains("hidden")) return;
+        if (!selected) return;
 
-        const input = block.querySelector(`[data-key="${key}"]`);
-        if (!input || !input.value) return;
+        if (selected.HideFields) {
+          selected.HideFields.forEach((fieldName) => {
+            const el = document.querySelector(
+              `[data-field-name="${fieldName}"]`
+            );
+            if (el) el.classList.add("hidden");
+          });
+        }
 
-        const selected = config.Values?.find(v => v.Value === input.value);
-
-        groupName += sanitize(input.value);
-
-        if (selected?.SubFields) {
-          selected.SubFields.forEach(sub => {
+        if (selected.SubFields) {
+          selected.SubFields.forEach((sub) => {
             const subKey = Object.keys(sub)[0];
             const subConfig = sub[subKey];
-            const subInput = container.querySelector(`[data-key="${subKey}"]`);
-            if (subInput?.value) {
-              groupName += subConfig.Delimiter + sanitize(subInput.value);
-            }
-          });
-          groupName += config.Delimiter;
-        } else {
-          groupName += config.Delimiter;
-        }
-      });
+            const subBlock = document.createElement("div");
+            subBlock.className = "field-block subfield";
 
-      document.getElementById("output").textContent = groupName.replace(/[-_]+$/, "");
-    }
-  </script>
-</body>
+            const label = document.createElement("label");
+            label.textContent = subKey;
+            subBlock.appendChild(label);
+
+            let input;
+            if (subConfig.FieldType === "FreeText") {
+              input = document.createElement("input");
+              input.type = "text";
+              input.addEventListener("input", generateGroupName);
+            } else if (subConfig.FieldType === "Predefined") {
+              input = document.createElement("select");
+              subConfig.Values.forEach((opt) => {
+                const option = document.createElement("option");
+                option.value = opt.Value;
+                option.textContent = opt.FriendlyName;
+                input.appendChild(option);
+              });
+              input.addEventListener("change", generateGroupName);
+            }
+
+            input.dataset.key = subKey;
+            subBlock.appendChild(input);
+            container.appendChild(subBlock);
+          });
+        }
+      }
+
+      function sanitize(value) {
+        if (options.TrimFields) {
+          value = value.trim();
+        }
+        if (typeof options.WhitespaceReplacement === "string") {
+          value = value.replace(/\s+/g, options.WhitespaceReplacement);
+        }
+        return value;
+      }
+
+      function generateGroupName() {
+        let groupName = "";
+        const container = document.getElementById("formContainer");
+        const output = document.getElementById("output");
+
+        schema.Fields.forEach((field) => {
+          const key = Object.keys(field)[0];
+          const config = field[key];
+          const block = container.querySelector(`[data-field-name="${key}"]`);
+          if (block?.classList.contains("hidden")) return;
+
+          const input = block.querySelector(`[data-key="${key}"]`);
+          if (!input || !input.value) return;
+
+          const selected = config.Values?.find((v) => v.Value === input.value);
+          groupName += sanitize(input.value);
+
+          if (selected?.SubFields) {
+            selected.SubFields.forEach((sub) => {
+              const subKey = Object.keys(sub)[0];
+              const subConfig = sub[subKey];
+              const subInput = container.querySelector(
+                `[data-key="${subKey}"]`
+              );
+              if (subInput?.value) {
+                groupName += subConfig.Delimiter + sanitize(subInput.value);
+              }
+            });
+            groupName += config.Delimiter;
+          } else {
+            groupName += config.Delimiter;
+          }
+        });
+
+        groupName = groupName.replace(/[-_]+$/, "");
+
+        if (options.IncludeTimestamp) {
+          const now = new Date();
+          let formatted = options.TimestampFormat || "YYYYMMDD-HHmm";
+          formatted = formatted
+            .replace("YYYY", now.getFullYear())
+            .replace("MM", String(now.getMonth() + 1).padStart(2, "0"))
+            .replace("DD", String(now.getDate()).padStart(2, "0"))
+            .replace("HH", String(now.getHours()).padStart(2, "0"))
+            .replace("mm", String(now.getMinutes()).padStart(2, "0"));
+          groupName += `-${formatted}`;
+        }
+
+        if (options.Uppercase) {
+          groupName = groupName.toUpperCase();
+        }
+
+        if (
+          typeof options.MaxLength === "number" &&
+          groupName.length > options.MaxLength
+        ) {
+          output.textContent = `❌ Error: Group name exceeds maximum length (${options.MaxLength} characters).`;
+          output.style.color = "red";
+          return;
+        }
+
+        output.textContent = groupName;
+        output.style.color = "#004a80";
+      }
+    </script>
+  </body>
 </html>
