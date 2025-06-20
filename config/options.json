@@ -1,8 +1,31 @@
 {
-  "WhitespaceReplacement":"",
-  "TrimFields": true,
-  "MaxLength": 50,
-  "Uppercase": true,
-  "IncludeTimestamp": true,
-  "TimestampFormat": "DDMMYYYY"
+  "WhitespaceReplacement": {
+    "value": "",
+    "editable": true,
+    "type": "Text"
+  },
+  "TrimFields": {
+    "value": true,
+    "editable": true,
+    "type": "Boolean"
+  },
+  "MaxLength": {
+    "value": 50,
+    "editable": true,
+    "type": "Integer"
+  },
+  "Uppercase": {
+    "value": true,
+    "editable": true,
+    "type": "Boolean"
+  },
+  "IncludeTimestamp": {
+    "value": true,
+    "editable": true,
+    "type": "Boolean",
+    "format": {
+      "value": "DDMMYYYY",
+      "type": "Text"
+    }
+  }
 }

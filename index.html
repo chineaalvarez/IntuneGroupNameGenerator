@@ -98,6 +98,10 @@
   <body>
     <h1>Intune Group Name Generator</h1>
     <div id="formContainer"></div>
+    <div id="optionsPanel" style="max-width: 600px; margin: 2rem auto; background: #f0f0f0; padding: 1rem; border-radius: 8px;">
+      <h3 style="margin-top: 0;">Options</h3>
+      <div id="optionsContainer"></div>
+    </div>
     <div id="output"></div>
     <button id="copyButton" onclick="copyToClipboard()">Copy</button>
     <div id="copyMessage" style="display: none; text-align: center; color: green; margin-top: 0.5rem;">Copied!</div>
@@ -115,6 +119,7 @@
           schema = schemaData;
           options = optionsData;
           createFormFromSchema(schema);
+          createOptionsPanel(options);
           generateGroupName();
         })
         .catch((err) => {
@@ -122,6 +127,78 @@
             "<p>Error loading configuration</p>";
           console.error("Loading error:", err);
         });
+      function createOptionsPanel(optionsConfig) {
+        const container = document.getElementById("optionsContainer");
+        container.innerHTML = "";
+
+        Object.entries(optionsConfig).forEach(([key, config]) => {
+          if (!config.editable) return;
+
+          const wrapper = document.createElement("div");
+          wrapper.style.marginBottom = "0.75rem";
+
+          const label = document.createElement("label");
+          label.textContent = key;
+          label.style.display = "block";
+          label.style.fontWeight = "500";
+          wrapper.appendChild(label);
+
+          let input;
+
+          if (config.type === "Boolean") {
+            input = document.createElement("input");
+            input.type = "checkbox";
+            input.checked = config.value;
+            input.addEventListener("change", () => {
+              options[key].value = input.checked;
+              generateGroupName();
+            });
+          } else if (config.type === "Integer" || config.type === "Text") {
+            input = document.createElement("input");
+            input.type = config.type === "Integer" ? "number" : "text";
+            input.value = config.value;
+            input.style.width = "100%";
+            input.addEventListener("input", () => {
+              options[key].value = config.type === "Integer" ? parseInt(input.value, 10) : input.value;
+              generateGroupName();
+            });
+          }
+
+          wrapper.appendChild(input);
+          container.appendChild(wrapper);
+
+          // Special handling for TimestampFormat under IncludeTimestamp
+          if (key === "IncludeTimestamp" && config.format) {
+            const formatWrapper = document.createElement("div");
+            formatWrapper.style.marginTop = "0.5rem";
+
+            const formatLabel = document.createElement("label");
+            formatLabel.textContent = "TimestampFormat";
+            formatLabel.style.display = "block";
+            formatLabel.style.fontWeight = "500";
+            formatWrapper.appendChild(formatLabel);
+
+            const formatInput = document.createElement("input");
+            formatInput.type = "text";
+            formatInput.value = config.format.value;
+            formatInput.style.width = "100%";
+
+            formatInput.addEventListener("input", () => {
+              options[key].format.value = formatInput.value;
+              generateGroupName();
+            });
+
+            // Disable if checkbox is not checked
+            input.addEventListener("change", () => {
+              formatInput.disabled = !input.checked;
+            });
+
+            formatInput.disabled = !input.checked;
+            formatWrapper.appendChild(formatInput);
+            container.appendChild(formatWrapper);
+          }
+        });
+      }
 
       function createFormFromSchema(schema) {
         const container = document.getElementById("formContainer");
