@@ -282,7 +282,7 @@
           typeof options.MaxLength === "number" &&
           groupName.length > options.MaxLength
         ) {
-          output.textContent = `❌ Error: Group name exceeds maximum length (${options.MaxLength} characters).`;
+          output.textContent = `❌ Error: Group name is ${groupName.length} characters long, exceeding the limit of ${options.MaxLength}.`;
           output.style.color = "red";
           return;
         }
