@@ -9,7 +9,7 @@
 <body class="bg-gray-100 text-gray-900 min-h-screen flex items-center justify-center p-6">
   <div class="bg-white p-6 rounded-2xl shadow-xl w-full max-w-xl">
     <h1 class="text-2xl font-bold mb-4">Intune Group Name Generator</h1>
-    <div class="grid grid-cols-2 gap-4 mb-4" id="form-fields">
+    <div class="grid grid-cols-2 gap-4 mb-4">
       <div>
         <label class="block font-medium mb-1">Platform</label>
         <select id="platform" class="w-full p-2 rounded border uppercase"></select>
@@ -22,7 +22,7 @@
         <label class="block font-medium mb-1">Type</label>
         <select id="type" class="w-full p-2 rounded border uppercase"></select>
       </div>
-            <div id="purpose-wrapper" class="col-span-2">
+      <div id="purpose-wrapper" class="col-span-2">
         <label class="block font-medium mb-1">Purpose</label>
         <select id="purpose" class="w-full p-2 rounded border uppercase"></select>
       </div>
@@ -34,8 +34,7 @@
         <label class="block font-medium mb-1">Intent</label>
         <select id="intent" class="w-full p-2 rounded border uppercase"></select>
       </div>
-    </div>
-    <div id="scope-wrapper" class="col-span-2">
+      <div id="scope-wrapper" class="col-span-2">
         <label class="block font-medium mb-1">Scope (Group Membership)</label>
         <input id="scope" type="text" class="w-full p-2 rounded border" placeholder="e.g. WSLUsers, SharedPCs, Developers" />
       </div>
@@ -99,15 +98,13 @@
         const appName = document.getElementById('appName').value.trim().replace(/\s+/g, '_');
         const version = document.getElementById('version').value.trim().replace(/\s+/g, '_');
         const intent = document.getElementById('intent').value.trim().replace(/\s+/g, '_').toUpperCase();
-        base.push(appName, version, intent);
+        const name = `INT-${base.join('-')}-${appName}_${version}_${intent}`;
+        document.getElementById('output').textContent = name;
       } else {
-        base.push(purpose);
         const scope = document.getElementById('scope').value.trim().replace(/\s+/g, '_');
-        base.push(scope);
+        const name = `INT-${base.join('-')}-${purpose}-${scope}`;
+        document.getElementById('output').textContent = name;
       }
-
-      const name = `INT-${base.join('-')}`;
-      document.getElementById('output').textContent = name;
     }
 
     [...fields, 'purpose', 'appName', 'version', 'intent', 'scope'].forEach(id => {
@@ -116,9 +113,9 @@
     });
 
     loadAllOptions().then(() => {
-  toggleAppFields();
-  updateOutput();
-});
+      toggleAppFields();
+      updateOutput();
+    });
   </script>
 </body>
 </html>
