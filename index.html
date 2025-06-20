@@ -18,9 +18,28 @@
         font-size: 1.8rem;
       }
 
-      #formContainer {
-        max-width: 600px;
+      #mainContainer {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 2rem;
+        max-width: 1200px;
         margin: 0 auto;
+        flex-wrap: wrap;
+      }
+
+      #optionsPanel {
+        background: #f0f0f0;
+        padding: 1rem;
+        border-radius: 8px;
+        min-width: 250px;
+        flex: 1;
+        max-width: 300px;
+      }
+
+      #formContainer {
+        flex: 2;
+        max-width: 600px;
         background: white;
         padding: 2rem;
         border-radius: 12px;
@@ -91,16 +110,29 @@
 
         #formContainer {
           padding: 1rem;
+          max-width: 100%;
+        }
+
+        #mainContainer {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        #optionsPanel {
+          max-width: 100%;
+          margin-top: 1rem;
         }
       }
     </style>
   </head>
   <body>
     <h1>Intune Group Name Generator</h1>
-    <div id="formContainer"></div>
-    <div id="optionsPanel" style="max-width: 600px; margin: 2rem auto; background: #f0f0f0; padding: 1rem; border-radius: 8px;">
-      <h3 style="margin-top: 0;">Options</h3>
-      <div id="optionsContainer"></div>
+    <div id="mainContainer">
+      <div id="formContainer"></div>
+      <div id="optionsPanel">
+        <h3>Options</h3>
+        <div id="optionsContainer"></div>
+      </div>
     </div>
     <div id="output"></div>
     <button id="copyButton" onclick="copyToClipboard()">Copy</button>
@@ -160,6 +192,21 @@
             input.style.width = "100%";
             input.addEventListener("input", () => {
               options[key].value = config.type === "Integer" ? parseInt(input.value, 10) : input.value;
+              generateGroupName();
+            });
+          } else if (config.type === "Choice" && Array.isArray(config.choices)) {
+            input = document.createElement("select");
+            config.choices.forEach(choice => {
+              const opt = document.createElement("option");
+              opt.value = choice;
+              opt.textContent = choice;
+              if (choice === config.value) {
+                opt.selected = true;
+              }
+              input.appendChild(opt);
+            });
+            input.addEventListener("change", () => {
+              options[key].value = input.value;
               generateGroupName();
             });
           }
