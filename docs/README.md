@@ -30,7 +30,7 @@ This naming structure helps IT administrators maintain clarity and uniformity wh
 
 ### `config/schema.json`
 
-Defines the **structure and order** of the fields used in the group name. Each field includes:
+####
 
 * **FieldType**:
 
@@ -77,7 +77,53 @@ Defines the **structure and order** of the fields used in the group name. Each f
     }
   ]
 }
+
 ```
+
+#### SubFields Mechanism
+
+SubFields allow you to define nested field logic, where a selected value from one field triggers the appearance of another dependent field. This is useful for scenarios where you want additional granularity based on a parent field choice.
+
+Each `SubField` is declared inside a value's definition and follows the same structure as a top-level field.
+
+For example, under the `Purpose` field:
+
+```
+{
+  "Purpose": {
+    "FieldType": "Predefined",
+    "Values": [
+      {
+        "FriendlyName": "Applications",
+        "Value": "APPS",
+        "SubFields": [
+          {
+            "Intent": {
+              "FieldType": "Predefined",
+              "Values": [
+                { "FriendlyName": "Required", "Value": "REQ" },
+                { "FriendlyName": "Available", "Value": "AVL" },
+                { "FriendlyName": "Uninstall", "Value": "UNINST" }
+              ],
+              "Delimiter": "-"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+In this case, selecting `Applications` in the Purpose field prompts the UI to show a second dropdown for `Intent`, allowing for an extended group name like:
+
+```
+INT-WIN-D-Dyn-Developers-Apps-REQ
+```
+
+The delimiter for each SubField can be customized independently.
+
+#### `HideField` is used to hide fields from the UI when they are no longer needed due to the presence of SubFields.
 
 ### `config/options.json`
 
@@ -202,9 +248,6 @@ https://<your-username>.github.io/<your-repo-name>/
 ---
 
 ## 🖼️ Screenshot
-
-![image](https://github.com/user-attachments/assets/3d23693e-8356-4306-a6ba-011044396052)
-
 
 ---
 
