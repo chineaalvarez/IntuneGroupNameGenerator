@@ -1,84 +1,149 @@
-{
-  "Fields": [
-    {
-      "Service": {
-        "FieldType": "Static",
-        "Value": "INT",
-        "Delimiter": "-"
-      }
-    },
-    {
-      "Platform": {
-        "FieldType": "Predefined",
-        "Values": [
-          { "FriendlyName": "Windows", "Value": "WIN" },
-          { "FriendlyName": "iOS", "Value": "IOS" },
-          { "FriendlyName": "macOS", "Value": "MAC" },
-          { "FriendlyName": "Android", "Value": "AND" }
-        ],
-        "Delimiter": "-"
-      }
-    },
-    {
-      "Membership": {
-        "FieldType": "Predefined",
-        "Values": [
-          { "FriendlyName": "Devices", "Value": "D" },
-          { "FriendlyName": "Users", "Value": "U" }
-        ],
-        "Delimiter": "-"
-      }
-    },
-    {
-      "Purpose": {
-        "FieldType": "Predefined",
-        "Values": [
-          {
-            "FriendlyName": "Applications",
-            "Value": "APPS",
-            "SubFields": [
-              {
-                "Intent": {
-                  "FieldType": "Predefined",
-                  "Values": [
-                    { "FriendlyName": "Required", "Value": "REQUIRED" },
-                    { "FriendlyName": "Uninstall", "Value": "UNINSTALL" },
-                    { "FriendlyName": "Available", "Value": "AVAILABLE" }
-                  ],
-                  "Delimiter": "_"
+[
+  {
+    "Name": "Intune Groups",
+    "Fields": [
+      {
+        "Service": {
+          "FieldType": "Static",
+          "Value": "INT",
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Platform": {
+          "FieldType": "Predefined",
+          "Values": [
+            { "FriendlyName": "Windows", "Value": "WIN" },
+            { "FriendlyName": "iOS", "Value": "IOS" },
+            { "FriendlyName": "macOS", "Value": "MAC" },
+            { "FriendlyName": "Android", "Value": "AND" }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Membership": {
+          "FieldType": "Predefined",
+          "Values": [
+            { "FriendlyName": "Devices", "Value": "D" },
+            { "FriendlyName": "Users", "Value": "U" }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Purpose": {
+          "FieldType": "Predefined",
+          "Values": [
+            {
+              "FriendlyName": "Applications",
+              "Value": "APPS",
+              "SubFields": [
+                {
+                  "Intent": {
+                    "FieldType": "Predefined",
+                    "Values": [
+                      { "FriendlyName": "Required", "Value": "REQUIRED" },
+                      { "FriendlyName": "Uninstall", "Value": "UNINSTALL" },
+                      { "FriendlyName": "Available", "Value": "AVAILABLE" }
+                    ],
+                    "Delimiter": "_"
+                  }
+                },
+                {
+                  "AppName": {
+                    "FieldType": "FreeText",
+                    "Delimiter": "_"
+                  }
+                },
+                {
+                  "Version": {
+                    "FieldType": "FreeText",
+                    "Delimiter": "_"
+                  }
                 }
-              },
-              {
-                "AppName": {
-                  "FieldType": "FreeText",
-                  "Delimiter": "_"
-                }
-              },
-              {
-                "Version": {
-                  "FieldType": "FreeText",
-                  "Delimiter": "_"
-                }
-              }
-            ],
-            "HideFields": ["Scope"]
-          },
-          { "FriendlyName": "Security", "Value": "SECURITY" },
-          { "FriendlyName": "Compliance", "Value": "COMPLIANCE" },
-          { "FriendlyName": "Updates", "Value": "UPDATE" },
-          { "FriendlyName": "Onboarding", "Value": "ONBOARDING" },
-          { "FriendlyName": "Deployment", "Value": "DEPLOYMENT" },
-          { "FriendlyName": "Monitoring", "Value": "MONITORING" },
-          { "FriendlyName": "Testing", "Value": "TESTING" }
-        ],
-        "Delimiter": "-"
+              ],
+              "HideFields": ["Scope"]
+            },
+            { "FriendlyName": "Security", "Value": "SECURITY" },
+            { "FriendlyName": "Compliance", "Value": "COMPLIANCE" },
+            { "FriendlyName": "Updates", "Value": "UPDATE" },
+            { "FriendlyName": "Onboarding", "Value": "ONBOARDING" },
+            { "FriendlyName": "Deployment", "Value": "DEPLOYMENT" },
+            { "FriendlyName": "Monitoring", "Value": "MONITORING" },
+            { "FriendlyName": "Testing", "Value": "TESTING" }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Scope": {
+          "FieldType": "FreeText",
+          "Delimiter": "-"
+        }
       }
-    },
-    {
-      "Scope": {
-        "FieldType": "FreeText",
-        "Delimiter": "-"
+    ]
+  },
+  {
+    "Name": "Intune Policies",
+    "Fields": [
+      {
+        "Platform": {
+          "FieldType": "Predefined",
+          "Values": [
+            { "FriendlyName": "Windows", "Value": "WIN" },
+            { "FriendlyName": "iOS", "Value": "IOS" },
+            { "FriendlyName": "macOS", "Value": "MAC" },
+            { "FriendlyName": "Android", "Value": "AND" }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Policy source": {
+          "FieldType": "Predefined",
+          "Values": [
+            { "FriendlyName": "Open Intune Baseline", "Value": "OIB" },
+            { "FriendlyName": "ChineaCH", "Value": "CCH" }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Category": {
+          "FieldType": "Predefined",
+          "Values": [
+            { "FriendlyName": "Endpoint Security", "Value": "ES" },
+            { "FriendlyName": "Settings Catalog", "Value": "SC" },
+            { "FriendlyName": "Administrative Templates", "Value": "AT" },
+            { "FriendlyName": "Device Configuration", "Value": "DC" },
+            { "FriendlyName": "Compliance Policies", "Value": "CP" }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Entity": {
+          "FieldType": "Predefined",
+          "Values": [
+            { "FriendlyName": "Devices", "Value": "D" },
+            { "FriendlyName": "Users", "Value": "U" }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "SubCategory": {
+          "FieldType": "FreeText",
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Version": {
+          "FieldType": "FreeText",
+          "Delimiter": "-"
+        }
       }
-    }
-  ]
-}
+    ]
+  }
+]
