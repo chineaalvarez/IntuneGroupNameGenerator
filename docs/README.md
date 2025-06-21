@@ -42,7 +42,7 @@ The tool is fully configurable — you can tailor the naming structure and modif
 * **Delimiter**: Character(s) separating each field (typically a hyphen `-`)
 * **Editable**: Fields and their delimiters can be adjusted to suit organizational needs.
 
-#### Minimal Schema Fields Example
+#### 🧩 Minimal Schema Fields Example
 
 <details>
 <summary>🧾 JSON: Minimal Field Configuration</summary>
@@ -85,7 +85,7 @@ The tool is fully configurable — you can tailor the naming structure and modif
 
 </details>
 
-#### SubFields Mechanism
+#### 🧱 SubFields Mechanism
 
 SubFields allow you to define nested field logic, where a selected value from one field triggers the appearance of another dependent field. This is useful for scenarios where you want additional granularity based on a parent field choice.
 
@@ -143,7 +143,7 @@ In this case, selecting "Applications" in the Purpose field will dynamically rev
 
 `HideField` is used to hide fields from the UI when they are no longer needed due to the presence of SubFields.
 
-#### Options
+#### ⚙️ Options
 
 Controls the **behavior and formatting rules** of the generator:
 
