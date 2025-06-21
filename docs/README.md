@@ -47,8 +47,6 @@ The tool is fully configurable — you can tailor the naming structure and modif
 <details>
 <summary>🧾 JSON: Minimal Field Configuration</summary>
 
-**📘 Minimal Field Configuration**
-
 ```json
 {
   "Fields": [
@@ -97,8 +95,6 @@ For example, under the `Purpose` field:
 
 <details>
 <summary>🧾 JSON: SubFields with HideFields</summary>
-
-**📘 SubFields with HideFields**
 
 ```json
 {
@@ -181,8 +177,6 @@ Controls the **behavior and formatting rules** of the generator:
 <details>
 <summary>🧾 JSON: Options Configuration</summary>
 
-**📘 Options Configuration**
-
 ```json
 {
   "WhitespaceReplacement": {
@@ -233,7 +227,7 @@ Controls the **behavior and formatting rules** of the generator:
 <details>
   <summary>🧾 JSON: Full Schema Example</summary>
 
-  **📘 Full Schema Structure**
+  ##### JSON Snippet: Full Schema Example
 
   ```json
   {
