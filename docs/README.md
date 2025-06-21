@@ -13,7 +13,7 @@ This naming structure helps IT administrators maintain clarity and uniformity wh
 ## 🚀 How It Works
 
 1. Open `index.html` in any modern browser.
-2. Use the form fields to select or enter values for:
+2. Use the form fields to select or enter values (the following are just examples and may vary based on your configuration):
 
    * **Platform** (e.g. WIN, MAC, IOS, AND)
    * **Entity** (D for Devices, U for Users)
@@ -25,6 +25,10 @@ This naming structure helps IT administrators maintain clarity and uniformity wh
 5. Most fields and their delimiters are fully editable through the schema configuration.
 
 ---
+
+## 🛠️ Customization
+
+The tool is fully configurable — you can tailor the naming structure and modify the fields to match your organization’s specific conventions. Simply adjust the `schema.json` to change field types, labels, orders, or add/remove options as needed. This allows for maximum flexibility in designing consistent and informative group names across various scenarios.
 
 ## ⚙️ Configuration Files
 
