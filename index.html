@@ -391,15 +391,6 @@
       }
 
       function generateGroupName() {
-        // Console log current options for troubleshooting
-        console.clear();
-        console.log("Generating group name with current options:");
-        Object.entries(options).forEach(([key, setting]) => {
-          console.log(`${key}:`, {
-            enabled: setting.enabled,
-            config: setting.config
-          });
-        });
         let groupName = "";
         const container = document.getElementById("formContainer");
         const output = document.getElementById("output");
