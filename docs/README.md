@@ -394,17 +394,13 @@ would result in:
 
 ---
 
-## 🌐 Hosting (Optional)
+## 🚀 Live Demo
 
-To host it via GitHub Pages:
+You can try the Structured Name Builder right now:
 
-1. Push the project to a GitHub repository.
-2. Go to **Settings → Pages** and set the source to the root of the `main` branch.
-3. The tool will be available at:
+🔗 [Open Live Demo](https://chineaalvarez.github.io/IntuneGroupNameGenerator/)
 
-```
-https://<your-username>.github.io/<your-repo-name>/
-```
+This is hosted on GitHub Pages using the same code in this repository. You can fork and customize your own version anytime.
 
 ---
 
