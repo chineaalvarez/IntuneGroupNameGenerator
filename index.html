@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Intune Group Name Generator</title>
+    <title>Structured Name Builder</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
       body {
@@ -126,7 +126,10 @@
     </style>
   </head>
   <body>
-    <h1>Intune Group Name Generator</h1>
+    <h1>Structured Name Builder</h1>
+    <div id="schemaCardContainer" style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+      <!-- Cards will be inserted dynamically -->
+    </div>
     <div id="mainContainer">
       <div id="formContainer"></div>
       <div id="optionsPanel">
@@ -139,26 +142,56 @@
     <div id="copyMessage" style="display: none; text-align: center; color: green; margin-top: 0.5rem;">Copied!</div>
 
     <script>
-      let schema;
+      let schemaMap = {};
+      let currentSchema = null;
       let options = {};
-      Promise.all([
-        fetch("config/schema.json").then((res) => res.json()),
-        fetch("config/options.json")
-          .then((res) => res.json())
-          .catch(() => ({})),
-      ])
-        .then(([schemaData, optionsData]) => {
-          schema = schemaData;
-          options = optionsData;
-          createFormFromSchema(schema);
-          createOptionsPanel(options);
-          generateGroupName();
+      fetch("config/schema.json")
+        .then((res) => res.json())
+        .then((data) => {
+          if (Array.isArray(data)) {
+            data.forEach((item) => {
+              if (item.Name) {
+                schemaMap[item.Name] = item;
+              }
+            });
+          }
+
+          const cardContainer = document.getElementById("schemaCardContainer");
+          Object.keys(schemaMap).forEach((name) => {
+            const card = document.createElement("div");
+            card.textContent = name;
+            card.style.cursor = "pointer";
+            card.style.padding = "1rem";
+            card.style.border = "2px solid #ccc";
+            card.style.borderRadius = "8px";
+            card.style.background = "#fff";
+            card.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
+            card.style.textAlign = "center";
+            card.style.minWidth = "140px";
+            card.style.flex = "0 1 auto";
+            card.addEventListener("click", () => switchSchema(name));
+            cardContainer.appendChild(card);
+          });
+
+          if (Object.keys(schemaMap).length > 0) {
+            // No longer loading options.json, use empty options by default
+            options = {};
+            switchSchema(Object.keys(schemaMap)[0]);
+          }
         })
         .catch((err) => {
           document.getElementById("formContainer").innerHTML =
             "<p>Error loading configuration</p>";
           console.error("Loading error:", err);
         });
+
+      function switchSchema(name) {
+        currentSchema = schemaMap[name];
+        options = JSON.parse(JSON.stringify(currentSchema.Options || {}));
+        createFormFromSchema(currentSchema);
+        createOptionsPanel(options);
+        generateGroupName();
+      }
       function createOptionsPanel(optionsConfig) {
         // 📋 Logging which options are editable
         console.log("📋 Opciones marcadas como editable:");
@@ -395,10 +428,14 @@
         const container = document.getElementById("formContainer");
         const output = document.getElementById("output");
 
-        // Ensure settings like Uppercase (even if not editable) are respected by always checking options.Uppercase?.enabled
-        // (No change needed here since the code below already checks options.Uppercase?.enabled)
+        // Use currentSchema instead of schema
+        const schemaObj = currentSchema;
+        if (!schemaObj || !schemaObj.Fields) {
+          output.textContent = "";
+          return;
+        }
 
-        schema.Fields.forEach((field) => {
+        schemaObj.Fields.forEach((field) => {
           const key = Object.keys(field)[0];
           const config = field[key];
           const block = container.querySelector(`[data-field-name="${key}"]`);
