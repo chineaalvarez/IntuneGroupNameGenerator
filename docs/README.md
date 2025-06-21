@@ -150,10 +150,9 @@ The delimiter for each SubField can be customized independently.
 
 `HideField` is used to hide fields from the UI when they are no longer needed due to the presence of SubFields.
 
-### `config/options.json`
+#### `Options`
 
-Controls the **behavior and formatting rules** of the generator:
-
+Each schema in `schema.json` includes its own `Options` block, which governs behavior and formatting specific to that schema. These options allow you to define rules such as whitespace replacement characters, maximum length, uppercase conversion, and timestamp inclusion. This modular approach ensures that each naming convention can be finely tuned to meet the unique requirements of different organizational contexts.
 * **WhitespaceReplacement**:
 
   * Replaces spaces with a specified character (e.g., `_`)
