@@ -45,7 +45,7 @@ The tool is fully configurable — you can tailor the naming structure and modif
 #### Minimal Schema Fields Example
 
 <details>
-<summary>Minimal Field Configuration</summary>
+<summary>🧾 JSON: Minimal Field Configuration</summary>
 
 ```json
 {
@@ -94,7 +94,7 @@ Each `SubField` is declared inside a value's definition and follows the same str
 For example, under the `Purpose` field:
 
 <details>
-<summary>SubFields with HideFields</summary>
+<summary>🧾 JSON: SubFields with HideFields</summary>
 
 ```json
 {
@@ -175,7 +175,7 @@ Controls the **behavior and formatting rules** of the generator:
   * `config.Format.value`: Format string like `DDMMYYYY`
 
 <details>
-<summary>Options Configuration</summary>
+<summary>🧾 JSON: Options Configuration</summary>
 
 ```json
 {
@@ -225,7 +225,7 @@ Controls the **behavior and formatting rules** of the generator:
 ---
 
 <details>
-  <summary>📄 Full Schema Example</summary>
+  <summary>🧾 JSON: Full Schema Example</summary>
 
   ##### JSON Snippet: Full Schema Example
 
