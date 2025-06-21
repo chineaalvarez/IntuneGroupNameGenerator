@@ -181,7 +181,7 @@
 
       function switchSchema(name) {
         currentSchema = schemaMap[name];
-        options = currentSchema.Options || {};
+        options = JSON.parse(JSON.stringify(currentSchema.Options || {}));
         createFormFromSchema(currentSchema);
         createOptionsPanel(options);
         generateGroupName();
