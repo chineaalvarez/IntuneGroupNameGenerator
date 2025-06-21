@@ -47,44 +47,6 @@ The tool is fully configurable — you can tailor the naming structure and modif
 * **Delimiter**: Character(s) separating each field (typically a hyphen `-`)
 * **Editable**: Fields and their delimiters can be adjusted to suit organizational needs.
 
-#### Example:
-
-```json
-{
-  "Fields": [
-    {
-      "Service": {
-        "FieldType": "Static",
-        "Value": "INT",
-        "Delimiter": "-"
-      }
-    },
-    {
-      "Platform": {
-        "FieldType": "Predefined",
-        "Values": [
-          { "FriendlyName": "Windows", "Value": "WIN" },
-          { "FriendlyName": "iOS", "Value": "IOS" },
-          { "FriendlyName": "macOS", "Value": "MAC" },
-          { "FriendlyName": "Android", "Value": "AND" }
-        ],
-        "Delimiter": "-"
-      }
-    },
-    {
-      "Entity": {
-        "FieldType": "Predefined",
-        "Values": [
-          { "FriendlyName": "Devices", "Value": "D" },
-          { "FriendlyName": "Users", "Value": "U" }
-        ],
-        "Delimiter": "-"
-      }
-    }
-  ]
-}
-
-```
 
 #### SubFields Mechanism
 
@@ -92,53 +54,6 @@ SubFields allow you to define nested field logic, where a selected value from on
 
 Each `SubField` is declared inside a value's definition and follows the same structure as a top-level field.
 
-For example, under the `Purpose` field:
-
-```json
-      "Purpose": {
-        "FieldType": "Predefined",
-        "Values": [
-          {
-            "FriendlyName": "Applications",
-            "Value": "APPS",
-            "SubFields": [
-              {
-                "Intent": {
-                  "FieldType": "Predefined",
-                  "Values": [
-                    { "FriendlyName": "Required", "Value": "REQUIRED" },
-                    { "FriendlyName": "Uninstall", "Value": "UNINSTALL" },
-                    { "FriendlyName": "Available", "Value": "AVAILABLE" }
-                  ],
-                  "Delimiter": "_"
-                }
-              },
-              {
-                "AppName": {
-                  "FieldType": "FreeText",
-                  "Delimiter": "_"
-                }
-              },
-              {
-                "Version": {
-                  "FieldType": "FreeText",
-                  "Delimiter": "_"
-                }
-              }
-            ],
-            "HideFields": ["Scope"]
-          },
-          { "FriendlyName": "Security", "Value": "SECURITY" },
-          { "FriendlyName": "Compliance", "Value": "COMPLIANCE" },
-          { "FriendlyName": "Updates", "Value": "UPDATE" },
-          { "FriendlyName": "Onboarding", "Value": "ONBOARDING" },
-          { "FriendlyName": "Deployment", "Value": "DEPLOYMENT" },
-          { "FriendlyName": "Monitoring", "Value": "MONITORING" },
-          { "FriendlyName": "Testing", "Value": "TESTING" }
-        ],
-        "Delimiter": "-"
-      }
-```
 
 In this case, selecting `Applications` in the Purpose field prompts the UI to show a second dropdown for `Intent`, `AppName` and `Version` allowing for an extended group name like:
 
@@ -150,7 +65,7 @@ The delimiter for each SubField can be customized independently.
 
 `HideField` is used to hide fields from the UI when they are no longer needed due to the presence of SubFields.
 
-#### `Options`
+#### Options
 
 Each schema in `schema.json` includes its own `Options` block, which governs behavior and formatting specific to that schema. These options allow you to define rules such as whitespace replacement characters, maximum length, uppercase conversion, and timestamp inclusion. This modular approach ensures that each naming convention can be finely tuned to meet the unique requirements of different organizational contexts.
 * **WhitespaceReplacement**:
@@ -183,46 +98,235 @@ Each schema in `schema.json` includes its own `Options` block, which governs beh
 #### Example:
 
 ```json
-{
-  "WhitespaceReplacement": {
-    "FriendlyName": "Whitespace character",
-    "enabled": true,
-    "editable": true,
-    "config": {
-      "Character": {
-        "value": "_",
-        "type": "Text"
+[
+  {
+    "Name": "Intune Groups",
+    "Fields": [
+      {
+        "Service": {
+          "FieldType": "Static",
+          "Value": "INT",
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Platform": {
+          "FieldType": "Predefined",
+          "Values": [
+            { "FriendlyName": "Windows", "Value": "WIN" },
+            { "FriendlyName": "iOS", "Value": "IOS" },
+            { "FriendlyName": "macOS", "Value": "MAC" },
+            { "FriendlyName": "Android", "Value": "AND" }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Membership": {
+          "FieldType": "Predefined",
+          "Values": [
+            { "FriendlyName": "Devices", "Value": "D" },
+            { "FriendlyName": "Users", "Value": "U" }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Purpose": {
+          "FieldType": "Predefined",
+          "Values": [
+            {
+              "FriendlyName": "Applications",
+              "Value": "APPS",
+              "SubFields": [
+                {
+                  "Intent": {
+                    "FieldType": "Predefined",
+                    "Values": [
+                      { "FriendlyName": "Required", "Value": "REQUIRED" },
+                      { "FriendlyName": "Uninstall", "Value": "UNINSTALL" },
+                      { "FriendlyName": "Available", "Value": "AVAILABLE" }
+                    ],
+                    "Delimiter": "_"
+                  }
+                },
+                {
+                  "AppName": {
+                    "FieldType": "FreeText",
+                    "Delimiter": "_"
+                  }
+                },
+                {
+                  "Version": {
+                    "FieldType": "FreeText",
+                    "Delimiter": "_"
+                  }
+                }
+              ],
+              "HideFields": ["Scope"]
+            },
+            { "FriendlyName": "Security", "Value": "SECURITY" },
+            { "FriendlyName": "Compliance", "Value": "COMPLIANCE" },
+            { "FriendlyName": "Updates", "Value": "UPDATE" },
+            { "FriendlyName": "Onboarding", "Value": "ONBOARDING" },
+            { "FriendlyName": "Deployment", "Value": "DEPLOYMENT" },
+            { "FriendlyName": "Monitoring", "Value": "MONITORING" },
+            { "FriendlyName": "Testing", "Value": "TESTING" }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Scope": {
+          "FieldType": "FreeText",
+          "Delimiter": "-"
+        }
+      }
+    ],
+    "Options": {
+      "WhitespaceReplacement": {
+        "FriendlyName": "Whitespace character",
+        "enabled": true,
+        "editable": true,
+        "config": {
+          "Character": {
+            "value": "_",
+            "type": "Text"
+          }
+        }
+      },
+      "MaxLength": {
+        "FriendlyName": "Max length",
+        "enabled": true,
+        "editable": false,
+        "config": {
+          "Length": {
+            "value": 50,
+            "type": "Integer"
+          }
+        }
+      },
+      "Uppercase": {
+        "FriendlyName": "Convert to uppercase",
+        "enabled": false,
+        "editable": true
+      },
+      "IncludeTimestamp": {
+        "FriendlyName": "Timestamp format",
+        "enabled": false,
+        "editable": false,
+        "config": {
+          "Format": {
+            "value": "DDMMYYYY",
+            "type": "Text"
+          }
+        }
       }
     }
   },
-  "MaxLength": {
-    "FriendlyName": "Max length",
-    "enabled": true,
-    "editable": false,
-    "config": {
-      "Length": {
-        "value": 50,
-        "type": "Integer"
+  {
+    "Name": "Intune Policies",
+    "Fields": [
+      {
+        "Platform": {
+          "FieldType": "Predefined",
+          "Values": [
+            { "FriendlyName": "Windows", "Value": "WIN" },
+            { "FriendlyName": "iOS", "Value": "IOS" },
+            { "FriendlyName": "macOS", "Value": "MAC" },
+            { "FriendlyName": "Android", "Value": "AND" }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Policy source": {
+          "FieldType": "Predefined",
+          "Values": [
+            { "FriendlyName": "Open Intune Baseline", "Value": "OIB" },
+            { "FriendlyName": "ChineaCH", "Value": "CCH" }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Category": {
+          "FieldType": "Predefined",
+          "Values": [
+            { "FriendlyName": "Endpoint Security", "Value": "ES" },
+            { "FriendlyName": "Settings Catalog", "Value": "SC" },
+            { "FriendlyName": "Administrative Templates", "Value": "AT" },
+            { "FriendlyName": "Device Configuration", "Value": "DC" },
+            { "FriendlyName": "Compliance Policies", "Value": "CP" }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Entity": {
+          "FieldType": "Predefined",
+          "Values": [
+            { "FriendlyName": "Devices", "Value": "D" },
+            { "FriendlyName": "Users", "Value": "U" }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "SubCategory": {
+          "FieldType": "FreeText",
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Version": {
+          "FieldType": "FreeText",
+          "Delimiter": "-"
+        }
       }
-    }
-  },
-  "Uppercase": {
-    "FriendlyName": "Convert to uppercase",
-    "enabled": false,
-    "editable": true
-  },
-  "IncludeTimestamp": {
-    "FriendlyName": "Timestamp format",
-    "enabled": false,
-    "editable": false,
-    "config": {
-      "Format": {
-        "value": "DDMMYYYY",
-        "type": "Text"
+    ],
+    "Options": {
+      "WhitespaceReplacement": {
+        "FriendlyName": "Whitespace character",
+        "enabled": false,
+        "editable": false,
+        "config": {
+          "Character": {
+            "value": "_",
+            "type": "Text"
+          }
+        }
+      },
+      "MaxLength": {
+        "FriendlyName": "Max length",
+        "enabled": true,
+        "editable": false,
+        "config": {
+          "Length": {
+            "value": 50,
+            "type": "Integer"
+          }
+        }
+      },
+      "Uppercase": {
+        "FriendlyName": "Convert to uppercase",
+        "enabled": false,
+        "editable": true
+      },
+      "IncludeTimestamp": {
+        "FriendlyName": "Timestamp format",
+        "enabled": false,
+        "editable": true,
+        "config": {
+          "Format": {
+            "value": "DDMMYYYY",
+            "type": "Text"
+          }
+        }
       }
     }
   }
-}
+]
 ```
 
 ---
