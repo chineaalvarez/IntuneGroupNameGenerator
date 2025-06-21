@@ -127,11 +127,8 @@
   </head>
   <body>
     <h1>Intune Group Name Generator</h1>
-    <div style="text-align:center; margin-bottom: 1rem;">
-      <label for="schemaSelector"><strong>Select Configuration:</strong></label>
-      <select id="schemaSelector" onchange="switchSchema(this.value)">
-        <!-- Options will be populated dynamically -->
-      </select>
+    <div id="schemaCardContainer" style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+      <!-- Cards will be inserted dynamically -->
     </div>
     <div id="mainContainer">
       <div id="formContainer"></div>
@@ -159,12 +156,21 @@
             });
           }
 
-          const selector = document.getElementById("schemaSelector");
+          const cardContainer = document.getElementById("schemaCardContainer");
           Object.keys(schemaMap).forEach((name) => {
-            const opt = document.createElement("option");
-            opt.value = name;
-            opt.textContent = name;
-            selector.appendChild(opt);
+            const card = document.createElement("div");
+            card.textContent = name;
+            card.style.cursor = "pointer";
+            card.style.padding = "1rem";
+            card.style.border = "2px solid #ccc";
+            card.style.borderRadius = "8px";
+            card.style.background = "#fff";
+            card.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
+            card.style.textAlign = "center";
+            card.style.minWidth = "140px";
+            card.style.flex = "0 1 auto";
+            card.addEventListener("click", () => switchSchema(name));
+            cardContainer.appendChild(card);
           });
 
           if (Object.keys(schemaMap).length > 0) {
