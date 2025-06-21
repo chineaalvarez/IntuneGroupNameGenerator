@@ -8,6 +8,8 @@ INT-<Platform>-<Entity>-<Type>-<Scope>-<Purpose>
 
 This naming structure helps IT administrators maintain clarity and uniformity when managing dynamic/static groups for devices and users in Microsoft Intune.
 
+The included examples and schema configurations were originally designed for Microsoft Intune scenarios. However, the tool is fully adaptable and can be used to define naming standards for any type of structured entity—whether in IT, development, documentation, or infrastructure.
+
 ---
 
 ## 🚀 How It Works
