@@ -398,7 +398,7 @@ would result in:
 
 You can try the Structured Name Builder right now:
 
-🔗 [Open Live Demo](https://chineaalvarez.github.io/Structure-Name-Builder/)
+🔗 [Open Live Demo](https://chineaalvarez.github.io/Structured-Name-Builder/)
 
 This is hosted on GitHub Pages using the same code in this repository. You can fork and customize your own version anytime.
 
