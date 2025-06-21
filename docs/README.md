@@ -8,7 +8,10 @@ A lightweight, web-based utility for generating structured names that follow cus
 
 This tool helps administrators, developers, and teams consistently generate names for policies, groups, configurations, and other structured objects across platforms and use cases.
 
+
 While the provided examples were originally created for Microsoft Intune use cases, the tool is fully adaptable and can be used to structure names for any type of entities or systems.
+
+This includes modifying fields, values, delimiters, and logic to fit naming schemes for cloud resources, policies, configuration items, or any domain-specific objects.
 
 ---
 
@@ -42,7 +45,7 @@ The tool is fully configurable — you can tailor the naming structure and modif
 * **Delimiter**: Character(s) separating each field (typically a hyphen `-`)
 * **Editable**: Fields and their delimiters can be adjusted to suit organizational needs.
 
-#### 🧩 Minimal Schema Fields Example
+### 🧩 Minimal Schema Fields Example
 
   This shows how to define the first few fields for a name structure.
 
@@ -87,7 +90,7 @@ The tool is fully configurable — you can tailor the naming structure and modif
 
 </details>
 
-#### 🧱 SubFields Mechanism
+### 🧱 SubFields Mechanism
 
   SubFields allow you to define nested field logic, where a selected value from one field triggers the appearance of another dependent field. This is useful for scenarios where you want additional granularity based on a parent field choice.
 
@@ -145,7 +148,7 @@ In this case, selecting "Applications" in the Purpose field will dynamically rev
 
 `HideField` is used to hide fields from the UI when they are no longer needed due to the presence of SubFields.
 
-#### ⚙️ Options
+### ⚙️ Options
 
   Controls the **behavior and formatting rules** of the generator:
 
