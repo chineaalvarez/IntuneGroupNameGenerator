@@ -168,14 +168,9 @@
           });
 
           if (Object.keys(schemaMap).length > 0) {
-            // Load options.json before initializing UI
-            fetch("config/options.json")
-              .then((res) => res.json())
-              .catch(() => ({}))
-              .then((optionsData) => {
-                options = optionsData;
-                switchSchema(Object.keys(schemaMap)[0]);
-              });
+            // No longer loading options.json, use empty options by default
+            options = {};
+            switchSchema(Object.keys(schemaMap)[0]);
           }
         })
         .catch((err) => {
@@ -186,6 +181,7 @@
 
       function switchSchema(name) {
         currentSchema = schemaMap[name];
+        options = currentSchema.Options || {};
         createFormFromSchema(currentSchema);
         createOptionsPanel(options);
         generateGroupName();
