@@ -44,6 +44,8 @@ The tool is fully configurable — you can tailor the naming structure and modif
 
 #### 🧩 Minimal Schema Fields Example
 
+  This shows how to define the first few fields for a name structure.
+
 <details>
 <summary>🧾 JSON: Minimal Field Configuration</summary>
 
@@ -87,9 +89,9 @@ The tool is fully configurable — you can tailor the naming structure and modif
 
 #### 🧱 SubFields Mechanism
 
-SubFields allow you to define nested field logic, where a selected value from one field triggers the appearance of another dependent field. This is useful for scenarios where you want additional granularity based on a parent field choice.
+  SubFields allow you to define nested field logic, where a selected value from one field triggers the appearance of another dependent field. This is useful for scenarios where you want additional granularity based on a parent field choice.
 
-Each `SubField` is declared inside a value's definition and follows the same structure as a top-level field.
+  Each `SubField` is declared inside a value's definition and follows the same structure as a top-level field.
 
 For example, under the `Purpose` field:
 
@@ -145,7 +147,7 @@ In this case, selecting "Applications" in the Purpose field will dynamically rev
 
 #### ⚙️ Options
 
-Controls the **behavior and formatting rules** of the generator:
+  Controls the **behavior and formatting rules** of the generator:
 
 * **WhitespaceReplacement**:
 
