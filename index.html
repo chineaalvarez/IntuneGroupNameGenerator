@@ -188,6 +188,11 @@
       function switchSchema(name) {
         currentSchema = schemaMap[name];
         options = JSON.parse(JSON.stringify(currentSchema.Options || {}));
+      
+        // ✅ Log the full schema for troubleshooting
+        console.log(`🔄 Switched to schema: ${name}`);
+        console.log("📦 Loaded schema object:", currentSchema);
+      
         createFormFromSchema(currentSchema);
         createOptionsPanel(options);
         generateGroupName();
