@@ -1,6 +1,6 @@
 # Structured Name Builder
 
-A lightweight, web-based utility for generating structured names that follow customizable naming conventions.
+A lightweight, web-based utility for generating structured names that follow customizable naming conventions. 
 
 ```
 <Prefix>-<Platform>-<Entity>-<Type>-<Scope>-<Purpose>
