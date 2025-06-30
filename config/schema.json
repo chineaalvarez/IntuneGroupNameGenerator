@@ -10,6 +10,62 @@
         }
       },
       {
+        "Object Type": {
+          "FieldType": "Predefined",
+          "Values": [
+            {
+              "FriendlyName": "Devices",
+              "Value": "DEV"
+            },
+            {
+              "FriendlyName": "Users",
+              "Value": "USR"
+            }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Platform": {
+          "FieldType": "Predefined",
+          "Values": [
+            {
+              "FriendlyName": "Windows",
+              "Value": "WIN"
+            },
+            {
+              "FriendlyName": "iOS",
+              "Value": "IOS"
+            },
+            {
+              "FriendlyName": "macOS",
+              "Value": "MAC"
+            },
+            {
+              "FriendlyName": "Android",
+              "Value": "AND"
+            }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
+        "Type": {
+          "FieldType": "Predefined",
+          "Values": [
+            {
+              "FriendlyName": "Dynamic",
+              "Value": "DYN"
+            },
+            {
+              "FriendlyName": "Static",
+              "Value": "STC"
+            }
+          ],
+          "Delimiter": "-"
+        }
+      },
+      {
         "Purpose": {
           "FieldType": "Predefined",
           "Values": [
@@ -81,62 +137,6 @@
             {
               "FriendlyName": "Testing",
               "Value": "TESTING"
-            }
-          ],
-          "Delimiter": "-"
-        }
-      },
-      {
-        "Object Type": {
-          "FieldType": "Predefined",
-          "Values": [
-            {
-              "FriendlyName": "Devices",
-              "Value": "DEV"
-            },
-            {
-              "FriendlyName": "Users",
-              "Value": "USR"
-            }
-          ],
-          "Delimiter": "-"
-        }
-      },
-      {
-        "Platform": {
-          "FieldType": "Predefined",
-          "Values": [
-            {
-              "FriendlyName": "Windows",
-              "Value": "WIN"
-            },
-            {
-              "FriendlyName": "iOS",
-              "Value": "IOS"
-            },
-            {
-              "FriendlyName": "macOS",
-              "Value": "MAC"
-            },
-            {
-              "FriendlyName": "Android",
-              "Value": "AND"
-            }
-          ],
-          "Delimiter": "-"
-        }
-      },
-      {
-        "Type": {
-          "FieldType": "Predefined",
-          "Values": [
-            {
-              "FriendlyName": "Dynamic",
-              "Value": "DYN"
-            },
-            {
-              "FriendlyName": "Static",
-              "Value": "STC"
             }
           ],
           "Delimiter": "-"
